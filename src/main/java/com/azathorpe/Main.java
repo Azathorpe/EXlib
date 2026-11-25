@@ -11,6 +11,7 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import java.nio.*;
+import java.nio.file.Path;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -130,28 +131,11 @@ public class Main {
         glEnableVertexAttribArray(0);
 
         VertexShader vs = new VertexShader();
-        vs.loadShaderCode("""
-                #version 330 core
-                layout(location = 0) in vec3 vertexPosition_modelspace;
-                
-                out vec3 vPos;
-                
-                void main(){
-                gl_Position.xyz = vertexPosition_modelspace;
-                gl_Position.w = 1.0;
-                vPos = vertexPosition_modelspace;
-                }""");
+        vs.loadShaderCode(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/resources/VertexShader/vert.GLSL"));
         vs.compileShader();
 
         FragmentShader fs = new FragmentShader();
-        fs.loadShaderCode("""
-                #version 330 core
-                in vec3 vPos;
-                out vec3 color;
-                
-                void main(){
-                color = vec3(vPos.x,vPos.y,vPos.z);
-                }""");
+        fs.loadShaderCode(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/resources/FragmentShader/frag.GLSL"));
         fs.compileShader();
 
         Program program = new Program();

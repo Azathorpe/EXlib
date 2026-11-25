@@ -1,5 +1,9 @@
 package com.azathorpe.utils.struct.opengl.shader;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import static org.lwjgl.opengl.GL20C.*;
 
 public abstract class Shader {
@@ -9,7 +13,19 @@ public abstract class Shader {
 
     protected Shader(int shaderType) {
         this.shaderType = shaderType;
-        shaderId = glCreateShader(shaderType);
+        shaderId = glCreateShader(this.shaderType);
+    }
+
+    protected Shader(int shaderType, String shaderCode) {
+        this.shaderType = shaderType;
+        shaderId = glCreateShader(this.shaderType);
+        loadShaderCode(shaderCode);
+    }
+
+    protected Shader(int shaderType, Path shaderCodePath) {
+        this.shaderType = shaderType;
+        shaderId = glCreateShader(this.shaderType);
+        loadShaderCode(shaderCodePath);
     }
 
     /**
@@ -19,6 +35,20 @@ public abstract class Shader {
      */
     public void loadShaderCode(String content) {
         shaderSource = content;
+    }
+
+    /**
+     * 加载着色器代码
+     *
+     * @param path 路径
+     */
+    public void loadShaderCode(Path path) {
+        try {
+            shaderSource = Files.readString(path);
+        } catch (IOException e) {
+            //TODO: log info
+            throw new RuntimeException(e);
+        }
     }
 
     /**
