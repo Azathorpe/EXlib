@@ -1,5 +1,10 @@
 package com.azathorpe;
 
+import com.azathorpe.utils.struct.opengl.VAO;
+import com.azathorpe.utils.struct.opengl.VBO;
+import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
+import com.azathorpe.utils.struct.opengl.shader.Program;
+import com.azathorpe.utils.struct.opengl.shader.VertexShader;
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
@@ -10,6 +15,15 @@ import java.nio.*;
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15C.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15C.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15C.glBufferData;
+import static org.lwjgl.opengl.GL15C.glGenBuffers;
+import static org.lwjgl.opengl.GL20C.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20C.glUseProgram;
+import static org.lwjgl.opengl.GL20C.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30C.glBindVertexArray;
+import static org.lwjgl.opengl.GL30C.glGenVertexArrays;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -64,17 +78,19 @@ public class Main {
             IntBuffer pHeight = stack.mallocInt(1); // int*
 
             // Get the window size passed to glfwCreateWindow
-            glfwGetWindowSize(window, pWidth, pHeight);
+            if (glfwGetPlatform() != GLFW_PLATFORM_WAYLAND)
+                glfwGetWindowSize(window, pWidth, pHeight);
 
             // Get the resolution of the primary monitor
             GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
             // Center the window
-            glfwSetWindowPos(
-                    window,
-                    (vidmode.width() - pWidth.get(0)) / 2,
-                    (vidmode.height() - pHeight.get(0)) / 2
-            );
+            if (glfwGetPlatform() != GLFW_PLATFORM_WAYLAND)
+                glfwSetWindowPos(
+                        window,
+                        (vidmode.width() - pWidth.get(0)) / 2,
+                        (vidmode.height() - pHeight.get(0)) / 2
+                );
         } // the stack frame is popped automatically
 
         // Make the OpenGL context current
@@ -87,25 +103,78 @@ public class Main {
     }
 
     private void loop() {
-        // This line is critical for LWJGL's interoperation with GLFW's
-        // OpenGL context, or any context that is managed externally.
-        // LWJGL detects the context that is current in the current thread,
-        // creates the GLCapabilities instance and makes the OpenGL
-        // bindings available for use.
         GL.createCapabilities();
 
-        // Set the clear color
-        glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+        try (MemoryStack stack = stackPush()) {
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+            glfwGetFramebufferSize(window, w, h);   // ← 帧缓冲尺寸，不是窗口尺寸
+            glViewport(0, 0, w.get(0), h.get(0));
+        }
 
-        // Run the rendering loop until the user has attempted to close
-        // the window or has pressed the ESCAPE key.
+        glfwSetFramebufferSizeCallback(window, (win, width, height) -> {
+            glViewport(0, 0, width, height);
+        });
+
+
+        float[] vertex = {
+                -1.0f, -1.0f, 0.0f,
+                1.0f, -1.0f, 0.0f,
+                0.0f, 1.0f, 0.0f
+        };
+
+        VAO vao = new VAO();
+        VBO vbo = new VBO(GL_ARRAY_BUFFER, vertex, GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+        glEnableVertexAttribArray(0);
+
+        VertexShader vs = new VertexShader();
+        vs.loadShaderCode("""
+                #version 330 core
+                layout(location = 0) in vec3 vertexPosition_modelspace;
+                
+                out vec3 vPos;
+                
+                void main(){
+                gl_Position.xyz = vertexPosition_modelspace;
+                gl_Position.w = 1.0;
+                vPos = vertexPosition_modelspace;
+                }""");
+        vs.compileShader();
+
+        FragmentShader fs = new FragmentShader();
+        fs.loadShaderCode("""
+                #version 330 core
+                in vec3 vPos;
+                out vec3 color;
+                
+                void main(){
+                color = vec3(vPos.x,vPos.y,vPos.z);
+                }""");
+        fs.compileShader();
+
+        Program program = new Program();
+        program.attachShader(vs);
+        program.attachShader(fs);
+        program.linkShader();
+
+        program.detachShader(vs);
+        program.detachShader(fs);
+        vs.deleteShader();
+        fs.deleteShader();
+
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
+            glUseProgram(program.getProgramId());
+
+            glBindVertexArray(vao.getId());
+            glDrawArrays(GL_TRIANGLES, 0, vertex.length / 3);
+            glBindVertexArray(0);
+
             glfwSwapBuffers(window); // swap the color buffers
 
-            // Poll for window events. The key callback above will only be
-            // invoked during this call.
             glfwPollEvents();
         }
     }
