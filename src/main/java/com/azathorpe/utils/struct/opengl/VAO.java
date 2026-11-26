@@ -6,7 +6,7 @@ import static org.lwjgl.opengl.GL30C.*;
  * VAO 实例化自动创建VAOID
  */
 public class VAO {
-    int id;
+    private final int id;
 
     public VAO() {
         id = glGenVertexArrays();
