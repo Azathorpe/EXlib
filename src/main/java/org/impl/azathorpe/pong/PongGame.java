@@ -12,6 +12,7 @@ import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
 import com.azathorpe.utils.struct.opengl.shader.Program;
 import com.azathorpe.utils.struct.opengl.shader.VertexShader;
+import org.impl.azathorpe.pong.entities.Ball;
 import org.impl.azathorpe.pong.entities.Paddle;
 import org.joml.Matrix3f;
 import org.joml.Vector3f;
@@ -23,6 +24,7 @@ import org.lwjgl.system.*;
 import org.joml.Matrix4f;
 
 
+import java.awt.*;
 import java.nio.*;
 import java.nio.file.Path;
 
@@ -81,7 +83,7 @@ public class PongGame {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
         // Create the window
-        window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Hello World!", NULL, NULL);
+        window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Pong Game -- By Azathorpe ♥️", NULL, NULL);
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
@@ -133,12 +135,14 @@ public class PongGame {
                 GameObject parent = getOwner();
                 Transform transform = parent.getComponent(Transform.class);
                 if (GLFW.glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-                    transform.position.add(0, 0.1f * playerSpeed, 0);
+                    if (transform.position.y <= 0.9)
+                        transform.position.add(0, 0.1f * playerSpeed, 0);
                 if (GLFW.glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-                    transform.position.add(0, -0.1f * playerSpeed, 0);
+                    if (transform.position.y >= -0.9)
+                        transform.position.add(0, -0.1f * playerSpeed, 0);
             }
         });
-        player1.getComponent(Transform.class).position.set(0.9f, 0, 0);
+        player1.getComponent(Transform.class).position.set(-0.9f, 0, 0);
 
         Paddle player2 = new Paddle(0, 150, 0);
         player2.addComponent(new InputComponent() {
@@ -147,20 +151,27 @@ public class PongGame {
                 GameObject parent = getOwner();
                 Transform transform = parent.getComponent(Transform.class);
                 if (GLFW.glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-                    transform.position.add(0, 0.1f * playerSpeed, 0);
+                    if (transform.position.y <= 0.9)
+                        transform.position.add(0, 0.1f * playerSpeed, 0);
                 if (GLFW.glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-                    transform.position.add(0, -0.1f * playerSpeed, 0);
+                    if (transform.position.y >= -0.9)
+                        transform.position.add(0, -0.1f * playerSpeed, 0);
             }
         });
-        player2.getComponent(Transform.class).position.set(-0.9f, 0, 0);
+        player2.getComponent(Transform.class).position.set(0.9f, 0, 0);
+
+        Ball ball = new Ball(0.02f, 24, 24, new Color(10, 120, 150));
 
         Scene scene = new Scene();
-        scene.addGameObject(player1, player2);
 
-        // Enable depth test
-        glEnable(GL_DEPTH_TEST);
-        // Accept fragment if it closer to the camera than the former one
-        glDepthFunc(GL_LESS);
+        float aspect = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;   // 800/600 = 1.333
+        scene.getCamera()
+                .getProjection().ortho(
+                        -aspect, aspect,
+                        -1, 1,
+                        -1, 1
+                );
+        scene.addGameObject(player1, player2, ball);
 
         try (MemoryStack stack = stackPush()) {
             IntBuffer w = stack.mallocInt(1);
