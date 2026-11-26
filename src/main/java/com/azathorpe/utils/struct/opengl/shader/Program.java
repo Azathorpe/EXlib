@@ -1,12 +1,23 @@
 package com.azathorpe.utils.struct.opengl.shader;
 
+import java.util.ArrayList;
+
 import static org.lwjgl.opengl.GL20C.*;
 
 public class Program {
+    private ArrayList<Shader> shaders = new ArrayList<>();
     private final int programId;
 
     public Program() {
         this.programId = glCreateProgram();
+    }
+
+    public Program(Shader... shaders) {
+        this.programId = glCreateProgram();
+        for (Shader shader : shaders) {
+            this.shaders.add(shader);
+            attachShader(shader);
+        }
     }
 
     /**
@@ -14,7 +25,7 @@ public class Program {
      *
      * @param shader 着色器
      */
-    public void attachShader(Shader shader) {
+    private void attachShader(Shader shader) {
         glAttachShader(programId, shader.getShaderId());
     }
 
@@ -23,7 +34,7 @@ public class Program {
      *
      * @param shaders 着色器s
      */
-    public void attachShader(Shader... shaders) {
+    private void attachShader(Shader... shaders) {
         for (Shader shader : shaders) {
             attachShader(shader);
         }
@@ -32,7 +43,7 @@ public class Program {
     /**
      * 连接着色器
      */
-    public void linkShader() {
+    private void linkShader() {
         glLinkProgram(programId);
 
         checkProgram();
@@ -41,7 +52,7 @@ public class Program {
     /**
      * 检查Program是否出错
      */
-    public void checkProgram() {
+    private void checkProgram() {
         int[] result = {0}, infoLogLength = {0};
         glGetShaderiv(programId, GL_COMPILE_STATUS, result);
         glGetShaderiv(programId, GL_INFO_LOG_LENGTH, infoLogLength);
@@ -55,17 +66,19 @@ public class Program {
 
     /**
      * 移除着色器
+     *
      * @param shader 着色器
      */
-    public void detachShader(Shader shader) {
+    private void detachShader(Shader shader) {
         glDetachShader(programId, shader.getShaderId());
     }
 
     /**
      * 移除着色器s
+     *
      * @param shaders 着色器s
      */
-    public void detachShader(Shader... shaders) {
+    private void detachShader(Shader... shaders) {
         for (Shader shader : shaders) {
             detachShader(shader);
         }
