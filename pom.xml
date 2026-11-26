@@ -12,6 +12,66 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 定义 LWJGL 版本，方便统一管理 -->
+        <lwjgl.version>3.4.3</lwjgl.version>
+        <!-- 定义原生库平台标识符，Maven 会根据操作系统自动替换 -->
+        <native.target>natives-linux</native.target>
+        <!-- Linux: natives-linux, macOS: natives-macos -->
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.joml</groupId>
+            <artifactId>joml</artifactId>
+            <version>1.10.9</version>
+        </dependency>
+
+        <!-- 1. 核心模块 (必需) -->
+        <dependency>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl</artifactId>
+            <version>${lwjgl.version}</version>
+        </dependency>
+
+        <!-- 2. 功能模块 (以 GLFW 和 OpenGL 为例) -->
+        <dependency>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl-glfw</artifactId>
+            <version>${lwjgl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl-opengl</artifactId>
+            <version>${lwjgl.version}</version>
+        </dependency>
+
+        <!-- 3. 原生库 (Runtime 范围，必须与上面的模块对应) -->
+        <!-- 核心原生库 -->
+        <dependency>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl</artifactId>
+            <version>${lwjgl.version}</version>
+            <classifier>${native.target}</classifier>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- GLFW 原生库 -->
+        <dependency>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl-glfw</artifactId>
+            <version>${lwjgl.version}</version>
+            <classifier>${native.target}</classifier>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- 【新增】OpenGL 原生库 - 这就是导致报错缺失的文件 -->
+        <dependency>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl-opengl</artifactId>
+            <version>${lwjgl.version}</version>
+            <classifier>${native.target}</classifier>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
 
 </project>
