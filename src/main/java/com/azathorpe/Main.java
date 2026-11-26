@@ -3,6 +3,7 @@ package com.azathorpe;
 import com.azathorpe.utils.struct.game.GameObject;
 import com.azathorpe.utils.struct.game.Material;
 import com.azathorpe.utils.struct.game.Mesh;
+import com.azathorpe.utils.struct.game.Transform;
 import com.azathorpe.utils.struct.opengl.VAO;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
@@ -230,15 +231,6 @@ public class Main {
                 new Vector3f(0, 1, 0)
         );
 
-        Matrix4f model = new Matrix4f();
-        model
-                .translate(0, 0, 1)
-                .rotate((float) Math.toRadians(45), 0, 1, 0)
-                .scale(2.0f);
-
-//        Matrix4f mvp = new Matrix4f();
-//        mvp.mul(projection).mul(view).mul(model);
-
         GameObject gameObject = new GameObject();
 
         gameObject.setMesh(new Mesh(
@@ -263,6 +255,13 @@ public class Main {
                 )
         ));
 
+        gameObject.setTransform(new Transform(
+                new Matrix4f()
+                        .translate(0, 0, 1)
+                        .rotate((float) Math.toRadians(45), 0, 1, 0)
+                        .scale(2.0f)
+        ));
+
 
         int mvpLocation = glGetUniformLocation(gameObject.getMaterial().getProgram().getProgramId(), "MVP");
 
@@ -271,15 +270,16 @@ public class Main {
 
             // Input
             if (GLFW.glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-                model.scale(0.9f);
+                gameObject.getTransform().getModel().scale(0.9f);
             else if (GLFW.glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-                model.scale(1.1f);
+                gameObject.getTransform().getModel().scale(1.1f);
             else if (GLFW.glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-                model.rotateZ((float) Math.toRadians(1));
+                gameObject.getTransform().getModel().rotateZ((float) Math.toRadians(1));
             else if (GLFW.glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-                model.rotateZ((float) Math.toRadians(-1));
+                gameObject.getTransform().getModel().rotateZ((float) Math.toRadians(-1));
+
             Matrix4f mvp = new Matrix4f();
-            mvp.mul(projection).mul(view).mul(model);
+            mvp.mul(projection).mul(view).mul(gameObject.getTransform().getModel());
 
             glUseProgram(gameObject.getMaterial().getProgram().getProgramId());
 
