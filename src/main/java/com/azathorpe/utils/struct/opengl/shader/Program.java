@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL20C.*;
 
 public class Program {
-    private ArrayList<Shader> shaders = new ArrayList<>();
+    private ArrayList<Shader> shaderRecord = new ArrayList<>();
     private final int programId;
 
     public Program() {
@@ -14,9 +14,26 @@ public class Program {
 
     public Program(Shader... shaders) {
         this.programId = glCreateProgram();
-        for (Shader shader : shaders) {
-            this.shaders.add(shader);
-            attachShader(shader);
+
+        try {
+            for (Shader shader : shaders) {
+                // 编译着色器
+                shader.compileShader();
+                // 添加着色器
+                attachShader(shader);
+                // 添加着色器到记录表
+                this.shaderRecord.add(shader);
+            }
+
+            // 连接所有着色器
+            linkProgram();
+        }finally{
+            // 移除所有着色器
+            detachShader(shaders);
+
+            // 删除所有着色器
+            for (Shader shader : shaderRecord)
+                shader.deleteShader();
         }
     }
 
@@ -43,7 +60,7 @@ public class Program {
     /**
      * 连接着色器
      */
-    private void linkShader() {
+    private void linkProgram() {
         glLinkProgram(programId);
 
         checkProgram();
@@ -53,13 +70,14 @@ public class Program {
      * 检查Program是否出错
      */
     private void checkProgram() {
-        int[] result = {0}, infoLogLength = {0};
-        glGetShaderiv(programId, GL_COMPILE_STATUS, result);
-        glGetShaderiv(programId, GL_INFO_LOG_LENGTH, infoLogLength);
-        if (infoLogLength[0] > 0) {
-            String info = glGetShaderInfoLog(programId, infoLogLength[0]);
-            //TODO: 更改为log.info
-            System.out.println(info);
+        if (glGetProgrami(programId, GL_LINK_STATUS) == GL_FALSE) {
+            String log = glGetProgramInfoLog(programId);
+            throw new RuntimeException("Program link failed:\n" + log);
+        }
+        // 可选：即使成功也打印警告信息
+        String log = glGetProgramInfoLog(programId);
+        if (!log.isEmpty()) {
+            System.out.println("Program link log:\n" + log);
         }
     }
 

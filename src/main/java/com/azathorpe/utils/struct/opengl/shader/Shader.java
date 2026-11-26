@@ -11,10 +11,6 @@ public abstract class Shader {
     private String shaderSource;
     private final int shaderType;
 
-    protected Shader(int shaderType) {
-        this.shaderType = shaderType;
-        shaderId = glCreateShader(this.shaderType);
-    }
 
     protected Shader(int shaderType, String shaderCode) {
         this.shaderType = shaderType;
@@ -33,7 +29,7 @@ public abstract class Shader {
      *
      * @param content 着色器代码
      */
-    public void loadShaderCode(String content) {
+    protected void loadShaderCode(String content) {
         shaderSource = content;
     }
 
@@ -42,19 +38,18 @@ public abstract class Shader {
      *
      * @param path 路径
      */
-    public void loadShaderCode(Path path) {
+    protected void loadShaderCode(Path path) throws IOException {
         try {
             shaderSource = Files.readString(path);
         } catch (IOException e) {
-            //TODO: log info
-            throw new RuntimeException(e);
+            throw new IOException("Failed to load shader: " + path, e);
         }
     }
 
     /**
      * 编译着色器
      */
-    public void compileShader() {
+    protected void compileShader() {
         glShaderSource(shaderId, shaderSource);
         glCompileShader(shaderId);
 
@@ -64,21 +59,23 @@ public abstract class Shader {
     /**
      * 检查着色器是否有编译异常
      */
-    public void checkShader() {
-        int[] result = {0}, infoLogLength = {0};
-        glGetShaderiv(shaderId, GL_COMPILE_STATUS, result);
-        glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, infoLogLength);
-        if (infoLogLength[0] > 0) {
-            String info = glGetShaderInfoLog(shaderId, infoLogLength[0]);
-            //TODO: 更改为log.info
-            System.out.println(info);
+    private void checkShader() {
+        if (glGetShaderi(shaderId, GL_COMPILE_STATUS) == GL_FALSE) {
+            String log = glGetShaderInfoLog(shaderId);
+            glDeleteShader(shaderId);   // 清理失败对象
+            throw new RuntimeException("Shader compile failed:\n" + log);
+        }
+        // 成功时如有警告，可选打印
+        String log = glGetShaderInfoLog(shaderId);
+        if (!log.isEmpty()) {
+            System.out.println("Shader compile log:\n" + log);
         }
     }
 
     /**
      * 移除着色器
      */
-    public void deleteShader() {
+    protected void deleteShader() {
         glDeleteShader(shaderId);
     }
 

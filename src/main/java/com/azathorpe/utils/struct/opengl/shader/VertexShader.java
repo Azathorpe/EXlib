@@ -9,10 +9,6 @@ import static org.lwjgl.opengl.GL20C.GL_VERTEX_SHADER;
  */
 public class VertexShader extends Shader {
 
-    public VertexShader() {
-        super(GL_VERTEX_SHADER);
-    }
-
     public VertexShader(String shaderCode) {
         super(GL_VERTEX_SHADER, shaderCode);
     }
