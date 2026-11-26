@@ -4,15 +4,16 @@ import com.azathorpe.utils.struct.game.GameObject;
 import com.azathorpe.utils.struct.game.Material;
 import com.azathorpe.utils.struct.game.Mesh;
 import com.azathorpe.utils.struct.game.Transform;
+import com.azathorpe.utils.struct.game.camera.Camera;
+import com.azathorpe.utils.struct.game.camera.Scene;
+import com.azathorpe.utils.struct.game.components.InputComponent;
 import com.azathorpe.utils.struct.opengl.VAO;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
 import com.azathorpe.utils.struct.opengl.shader.Program;
 import com.azathorpe.utils.struct.opengl.shader.VertexShader;
-import org.joml.Matrix3f;
 import org.joml.Vector3f;
-import org.joml.Vector3fc;
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
@@ -22,7 +23,6 @@ import org.joml.Matrix4f;
 
 import java.nio.*;
 import java.nio.file.Path;
-import java.util.Optional;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -31,12 +31,9 @@ import static org.lwjgl.opengl.GL15C.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15C.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL15C.glBufferData;
 import static org.lwjgl.opengl.GL15C.glGenBuffers;
-import static org.lwjgl.opengl.GL20C.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20C.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20C.glUniformMatrix4fv;
-import static org.lwjgl.opengl.GL20C.glUseProgram;
 import static org.lwjgl.opengl.GL20C.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30C.glBindVertexArray;
 import static org.lwjgl.opengl.GL30C.glGenVertexArrays;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -217,24 +214,10 @@ public class Main {
                 1.0f, -1.0f, 1.0f
         };
 
-        Matrix4f projection = new Matrix4f();
-        projection.perspective(
-                (float) Math.toRadians(45.0f),
-                (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT,
-                0.1f,
-                100.0f
-        );
-
-        Matrix4f view = new Matrix4f();
-        view.lookAt(
-                new Vector3f(4, 3, 3),
-                new Vector3f(0, 0, 0),
-                new Vector3f(0, 1, 0)
-        );
-
         GameObject gameObject = new GameObject();
         gameObject.addComponent(new Mesh(
                 new VAO(),
+                vertex.length / 3,
                 new VBO(
                         GL_ARRAY_BUFFER,
                         vertex,
@@ -256,54 +239,53 @@ public class Main {
 
         gameObject.addComponent(new Transform());
 
-        gameObject.getComponent(Transform.class).ifPresent(
-                (transform) -> {
-                    transform.transform
-                            .translate(0, 0, 1)
-                            .rotate((float) Math.toRadians(45), 0, 1, 0);
-                }
-        );
+        gameObject.getComponent(Transform.class)
+                .transform
+                .translate(0, 0, 1)
+                .rotate((float) Math.toRadians(45), 0, 1, 0);
 
+        gameObject.addComponent(new InputComponent() {
+            @Override
+            public void input() {
+                GameObject object = getOwner();
+                Transform transform = object.getComponent(Transform.class);
 
-        int mvpLocation = glGetUniformLocation(gameObject.getComponent(Material.class).get().getProgram().getProgramId(), "MVP");
+                if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+                    transform.transform.translate(0, -0.1f, 0);
+                if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+                    transform.transform.translate(0, 0.1f, 0);
+                if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+                    transform.transform.translate(0.1f, 0, 0);
+                if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+                    transform.transform.translate(-0.1f, 0, 0);
+            }
+        });
+
+        Scene scene = new Scene();
+        scene.addGameObject(gameObject);
+
+        scene.setCamera(new Camera());
+        scene.getCamera()
+                .setProjection(new Matrix4f()
+                        .perspective(
+                                (float) Math.toRadians(45.0f),
+                                (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT,
+                                0.1f,
+                                100.0f
+                        ));
+        scene.getCamera()
+                .setView(new Matrix4f()
+                        .lookAt(
+                                new Vector3f(4, 3, 3),
+                                new Vector3f(0, 0, 0),
+                                new Vector3f(0, 1, 0)
+                        ));
 
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer\
 
-            Transform transform = gameObject.getComponent(Transform.class).get();
-            Material material = gameObject.getComponent(Material.class).get();
-            Mesh mesh = gameObject.getComponent(Mesh.class).get();
-
-
-            // Input
-            if (GLFW.glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-                transform.transform.translate(0, -0.1f, 0);
-            if (GLFW.glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-                transform.transform.translate(0, 0.1f, 0);
-            if (GLFW.glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-                transform.transform.translate(0.1f, 0, 0);
-            if (GLFW.glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-                transform.transform.translate(-0.1f, 0, 0);
-
-            Matrix4f mvp = new Matrix4f();
-            mvp.mul(projection).mul(view).mul(transform.transform);
-
-            glUseProgram(material.getProgram().getProgramId());
-
-            try (MemoryStack stack = MemoryStack.stackPush()) {
-                FloatBuffer buffer = stack.mallocFloat(16);
-                // 将 JOML 的 Matrix4f 数据写入缓冲区
-                // JOML 默认也是列主序，与 OpenGL 兼容
-                mvp.get(buffer);
-                // 上传到 GPU
-                // 参数: 位置, 是否转置(false), 数据缓冲区
-                glUniformMatrix4fv(mvpLocation, false, buffer);
-            }
-
-
-            glBindVertexArray(mesh.getVao().getId());
-            glDrawArrays(GL_TRIANGLES, 0, vertex.length / 3);
-            glBindVertexArray(0);
+            scene.render();
+            scene.input();
 
             glfwSwapBuffers(window); // swap the color buffers
 

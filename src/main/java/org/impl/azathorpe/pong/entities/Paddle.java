@@ -31,6 +31,19 @@ public class Paddle extends GameObject {
     };
 
     public Paddle() {
+        this.addComponent(new Mesh(
+                vertex.length / 3,
+                new VBO(
+                        GL_ARRAY_BUFFER, vertex, GL_STATIC_DRAW,
+                        new VertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0)
+                )
+        ));
 
+        this.addComponent(new Material(
+                new Program(
+                        new VertexShader(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/java/org/impl/azathorpe/pong/resources/vertex.GLSL")),
+                        new FragmentShader(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/java/org/impl/azathorpe/pong/resources/frag.GLSL"))
+                )
+        ));
     }
 }

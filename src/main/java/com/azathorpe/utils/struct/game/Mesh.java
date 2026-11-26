@@ -14,37 +14,35 @@ import static org.lwjgl.opengl.GL20C.glEnableVertexAttribArray;
 /**
  * 定义物体的位置
  */
-public class Mesh implements Component {
+public class Mesh extends Component {
     private final VAO vao;
     private final List<VBO> vbos = new ArrayList<>();
 
-    @Override
-    public void load() {
+    private final int vertexCount;
 
+    /**
+     * look at:
+     * {@link VBO#VBO}
+     */
+    public Mesh(int target, float[] vertex, int usage, VertexAttribPointer vap, int vertexCount) {
+        this(new VAO(), vertexCount, new VBO(target, vertex, usage, vap));
     }
 
     /**
      * look at:
      * {@link VBO#VBO}
      */
-    public Mesh(int target, float[] vertex, int usage, VertexAttribPointer vap) {
-        this(new VAO(), new VBO(target, vertex, usage, vap));
+    public Mesh(int target, FloatBuffer vertex, int usage, VertexAttribPointer vap, int vertexCount) {
+        this(new VAO(), vertexCount, new VBO(target, vertex, usage, vap));
     }
 
-    /**
-     * look at:
-     * {@link VBO#VBO}
-     */
-    public Mesh(int target, FloatBuffer vertex, int usage, VertexAttribPointer vap) {
-        this(new VAO(), new VBO(target, vertex, usage, vap));
+    public Mesh(int vertexCount, VBO... vbos) {
+        this(new VAO(), vertexCount, vbos);
     }
 
-    public Mesh(VBO... vbos) {
-        this(new VAO(), vbos);
-    }
-
-    public Mesh(VAO vao, VBO... vbos) {
+    public Mesh(VAO vao, int vertexCount, VBO... vbos) {
         this.vao = vao;
+        this.vertexCount = vertexCount;
         this.vbos.addAll(List.of(vbos));
 
         // VAO VBO创建完之后 我们就可以加载顶点数组了
@@ -87,5 +85,9 @@ public class Mesh implements Component {
 
     public List<VBO> getVbos() {
         return vbos;
+    }
+
+    public int getVertexCount() {
+        return vertexCount;
     }
 }

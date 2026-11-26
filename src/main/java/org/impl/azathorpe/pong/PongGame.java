@@ -10,6 +10,7 @@ import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
 import com.azathorpe.utils.struct.opengl.shader.Program;
 import com.azathorpe.utils.struct.opengl.shader.VertexShader;
+import org.impl.azathorpe.pong.entities.Paddle;
 import org.joml.Matrix3f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
@@ -121,6 +122,8 @@ public class PongGame {
     private void loop() {
         GL.createCapabilities();
 
+        Paddle player1 = new Paddle();
+
         // Enable depth test
         glEnable(GL_DEPTH_TEST);
         // Accept fragment if it closer to the camera than the former one
@@ -139,6 +142,12 @@ public class PongGame {
 
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+
+            glUseProgram(player1.getComponent(Material.class).getProgram().getProgramId());
+
+            glBindVertexArray(player1.getComponent(Mesh.class).getVao().getId());
+            glDrawArrays(GL_TRIANGLES, 0, 6 / 3);
+            glBindVertexArray(0);
 
             glfwSwapBuffers(window); // swap the color buffers
 
