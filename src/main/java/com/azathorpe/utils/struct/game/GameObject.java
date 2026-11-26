@@ -3,6 +3,7 @@ package com.azathorpe.utils.struct.game;
 public class GameObject {
     Mesh mesh;
     Material material;
+    Transform transform;
 
     public GameObject() {
     }
@@ -26,5 +27,13 @@ public class GameObject {
 
     public void setMaterial(Material material) {
         this.material = material;
+    }
+
+    public Transform getTransform() {
+        return transform;
+    }
+
+    public void setTransform(Transform transform) {
+        this.transform = transform;
     }
 }
