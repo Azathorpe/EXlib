@@ -34,6 +34,10 @@ public class Mesh {
         this(new VAO(), new VBO(target, vertex, usage, vap));
     }
 
+    public Mesh(VBO... vbos) {
+        this(new VAO(), vbos);
+    }
+
     public Mesh(VAO vao, VBO... vbos) {
         this.vao = vao;
         this.vbos.addAll(List.of(vbos));
@@ -42,6 +46,9 @@ public class Mesh {
         loadVertex();
     }
 
+    /**
+     * 加载VertexAttribArray
+     */
     private void loadVertex() {
         // 保证vbo按照index排序
         vbos.sort(Comparator.comparingInt(o -> o.getVap().getIndex()));

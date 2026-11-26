@@ -1,6 +1,7 @@
 package com.azathorpe;
 
 import com.azathorpe.utils.struct.game.GameObject;
+import com.azathorpe.utils.struct.game.Material;
 import com.azathorpe.utils.struct.game.Mesh;
 import com.azathorpe.utils.struct.opengl.VAO;
 import com.azathorpe.utils.struct.opengl.VBO;
@@ -224,8 +225,13 @@ public class Main {
         );
 
         Matrix4f model = new Matrix4f();
+        model
+                .translate(0, 0, 1)
+                .rotate((float) Math.toRadians(45), 0, 1, 0)
+                .scale(2.0f);
 
-        Matrix4f mvp = projection.mul(view).mul(model);
+//        Matrix4f mvp = new Matrix4f();
+//        mvp.mul(projection).mul(view).mul(model);
 
         GameObject gameObject = new GameObject();
 
@@ -244,18 +250,28 @@ public class Main {
                 )
         ));
 
+        gameObject.setMaterial(new Material(
+                new Program(
+                        new VertexShader(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/resources/VertexShader/vert.GLSL")),
+                        new FragmentShader(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/resources/FragmentShader/frag.GLSL"))
+                )
+        ));
 
-        Program program = new Program(
-                new VertexShader(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/resources/VertexShader/vert.GLSL")),
-                new FragmentShader(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/resources/FragmentShader/frag.GLSL"))
-        );
 
-        int mvpLocation = glGetUniformLocation(program.getProgramId(), "MVP");
+        int mvpLocation = glGetUniformLocation(gameObject.getMaterial().getProgram().getProgramId(), "MVP");
 
         while (!glfwWindowShouldClose(window)) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer\
 
-            glUseProgram(program.getProgramId());
+            // Input
+            if(GLFW.glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
+                model.scale(0.9f);
+            }else if(GLFW.glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+                model.scale(1.1f);
+            Matrix4f mvp = new Matrix4f();
+            mvp.mul(projection).mul(view).mul(model);
+
+            glUseProgram(gameObject.getMaterial().getProgram().getProgramId());
 
             try (MemoryStack stack = MemoryStack.stackPush()) {
                 FloatBuffer buffer = stack.mallocFloat(16);
