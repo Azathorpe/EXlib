@@ -120,6 +120,12 @@ public class Main {
     private void loop() {
         GL.createCapabilities();
 
+        // Enable depth test
+        glEnable(GL_DEPTH_TEST);
+        // Accept fragment if it closer to the camera than the former one
+        glDepthFunc(GL_LESS);
+
+
         try (MemoryStack stack = stackPush()) {
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
@@ -264,10 +270,14 @@ public class Main {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer\
 
             // Input
-            if(GLFW.glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
+            if (GLFW.glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
                 model.scale(0.9f);
-            }else if(GLFW.glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            else if (GLFW.glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
                 model.scale(1.1f);
+            else if (GLFW.glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+                model.rotateZ((float) Math.toRadians(1));
+            else if (GLFW.glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+                model.rotateZ((float) Math.toRadians(-1));
             Matrix4f mvp = new Matrix4f();
             mvp.mul(projection).mul(view).mul(model);
 
