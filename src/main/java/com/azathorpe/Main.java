@@ -239,10 +239,8 @@ public class Main {
 
         gameObject.addComponent(new Transform());
 
-        gameObject.getComponent(Transform.class)
-                .transform
-                .translate(0, 0, 1)
-                .rotate((float) Math.toRadians(45), 0, 1, 0);
+        gameObject.getComponent(Transform.class).position.z = 1;
+        gameObject.getComponent(Transform.class).rotation.set(0, 1, 0);
 
         gameObject.addComponent(new InputComponent() {
             @Override
@@ -251,19 +249,19 @@ public class Main {
                 Transform transform = object.getComponent(Transform.class);
 
                 if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-                    transform.transform.translate(0, 0.1f, 0);
+                    transform.position.add(0, 0.1f, 0);
                 if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-                    transform.transform.translate(0, -0.1f, 0);
+                    transform.position.add(0, -0.1f, 0);
                 if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-                    transform.transform.translate(-0.1f, 0, 0);
+                    transform.position.add(-0.1f, 0, 0);
                 if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-                    transform.transform.translate(0.1f, 0, 0);
-                if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-                    transform.transform.rotateX((float) Math.toRadians(1.0f));
-                if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-                    transform.transform.rotateY((float) Math.toRadians(1.0f));
-                if(glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-                    transform.transform.rotateZ((float) Math.toRadians(1.0f));
+                    transform.position.add(0.1f, 0, 0);
+                if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+                    transform.rotation.rotateX((float) Math.toRadians(1.0f));
+                if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+                    transform.rotation.rotateY((float) Math.toRadians(1.0f));
+                if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+                    transform.rotation.rotateZ((float) Math.toRadians(1.0f));
             }
         });
 

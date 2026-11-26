@@ -19,7 +19,7 @@ import static org.lwjgl.opengl.GL30C.glBindVertexArray;
 
 public class Scene {
     List<GameObject> gameObjects = new ArrayList<>();
-    Camera camera;
+    Camera camera = new Camera();
 
     public void render() {
         for (GameObject gameObject : gameObjects) {
@@ -27,7 +27,7 @@ public class Scene {
             Material material = gameObject.getComponent(Material.class);
             Mesh mesh = gameObject.getComponent(Mesh.class);
 
-            Matrix4f mvp = camera.getMVP(transform.transform);
+            Matrix4f mvp = camera.getMVP(transform.getModel());
             int mvpLocation = glGetUniformLocation(gameObject.getComponent(Material.class).getProgram().getProgramId(), "MVP");
 
             glUseProgram(material.getProgram().getProgramId());
