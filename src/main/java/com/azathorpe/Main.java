@@ -22,6 +22,7 @@ import org.joml.Matrix4f;
 
 import java.nio.*;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -232,8 +233,7 @@ public class Main {
         );
 
         GameObject gameObject = new GameObject();
-
-        gameObject.setMesh(new Mesh(
+        gameObject.addComponent(new Mesh(
                 new VAO(),
                 new VBO(
                         GL_ARRAY_BUFFER,
@@ -247,41 +247,48 @@ public class Main {
                         new VertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0)
                 )
         ));
-
-        gameObject.setMaterial(new Material(
+        gameObject.addComponent(new Material(
                 new Program(
                         new VertexShader(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/resources/VertexShader/vert.GLSL")),
                         new FragmentShader(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/resources/FragmentShader/frag.GLSL"))
                 )
         ));
 
-        gameObject.setTransform(new Transform(
-                new Matrix4f()
-                        .translate(0, 0, 1)
-                        .rotate((float) Math.toRadians(45), 0, 1, 0)
-                        .scale(2.0f)
-        ));
+        gameObject.addComponent(new Transform());
+
+        gameObject.getComponent(Transform.class).ifPresent(
+                (transform) -> {
+                    transform.transform
+                            .translate(0, 0, 1)
+                            .rotate((float) Math.toRadians(45), 0, 1, 0);
+                }
+        );
 
 
-        int mvpLocation = glGetUniformLocation(gameObject.getMaterial().getProgram().getProgramId(), "MVP");
+        int mvpLocation = glGetUniformLocation(gameObject.getComponent(Material.class).get().getProgram().getProgramId(), "MVP");
 
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer\
 
+            Transform transform = gameObject.getComponent(Transform.class).get();
+            Material material = gameObject.getComponent(Material.class).get();
+            Mesh mesh = gameObject.getComponent(Mesh.class).get();
+
+
             // Input
             if (GLFW.glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-                gameObject.getTransform().getModel().scale(0.9f);
-            else if (GLFW.glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-                gameObject.getTransform().getModel().scale(1.1f);
-            else if (GLFW.glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-                gameObject.getTransform().getModel().rotateZ((float) Math.toRadians(1));
-            else if (GLFW.glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-                gameObject.getTransform().getModel().rotateZ((float) Math.toRadians(-1));
+                transform.transform.translate(0, -0.1f, 0);
+            if (GLFW.glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+                transform.transform.translate(0, 0.1f, 0);
+            if (GLFW.glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+                transform.transform.translate(0.1f, 0, 0);
+            if (GLFW.glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+                transform.transform.translate(-0.1f, 0, 0);
 
             Matrix4f mvp = new Matrix4f();
-            mvp.mul(projection).mul(view).mul(gameObject.getTransform().getModel());
+            mvp.mul(projection).mul(view).mul(transform.transform);
 
-            glUseProgram(gameObject.getMaterial().getProgram().getProgramId());
+            glUseProgram(material.getProgram().getProgramId());
 
             try (MemoryStack stack = MemoryStack.stackPush()) {
                 FloatBuffer buffer = stack.mallocFloat(16);
@@ -294,7 +301,7 @@ public class Main {
             }
 
 
-            glBindVertexArray(gameObject.getMesh().getVao().getId());
+            glBindVertexArray(mesh.getVao().getId());
             glDrawArrays(GL_TRIANGLES, 0, vertex.length / 3);
             glBindVertexArray(0);
 

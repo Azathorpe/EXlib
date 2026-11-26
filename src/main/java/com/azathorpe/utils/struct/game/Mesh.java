@@ -14,9 +14,14 @@ import static org.lwjgl.opengl.GL20C.glEnableVertexAttribArray;
 /**
  * 定义物体的位置
  */
-public class Mesh {
+public class Mesh implements Component {
     private final VAO vao;
     private final List<VBO> vbos = new ArrayList<>();
+
+    @Override
+    public void load() {
+
+    }
 
     /**
      * look at:
