@@ -11,6 +11,10 @@ public class VBO {
     private final int id;
     private final int target;
 
+    /**
+     * 设置如何读取参数
+     */
+    VertexAttribPointer vap;
 
     /**
      * @param target <br>
@@ -25,9 +29,10 @@ public class VBO {
      *               {@link org.lwjgl.opengl.GL15C#GL_DYNAMIC_DRAW}
      *               动态数据，需要频繁更新。<br>
      */
-    public VBO(int target, float[] vertex, int usage) {
+    public VBO(int target, float[] vertex, int usage, VertexAttribPointer vap) {
         id = glGenBuffers();
         this.target = target;
+        this.vap = vap;
         bindVBO();
         glBufferData(target, vertex, usage);
     }
@@ -45,13 +50,21 @@ public class VBO {
      *               {@link org.lwjgl.opengl.GL15C#GL_DYNAMIC_DRAW}
      *               动态数据，需要频繁更新。<br>
      */
-    public VBO(int target, FloatBuffer vertex, int usage) {
+    public VBO(int target, FloatBuffer vertex, int usage, VertexAttribPointer vap) {
         id = glGenBuffers();
         this.target = target;
+        this.vap = vap;
         bindVBO();
+        // 在上传数据前绑定VBO
         glBufferData(target, vertex, usage);
+        // 之后解绑
+        unbindVBO();
     }
 
+
+    public void setVAP() {
+        vap.set(this);
+    }
 
     /**
      * 绑定 VBO
@@ -76,5 +89,9 @@ public class VBO {
 
     public int getId() {
         return id;
+    }
+
+    public VertexAttribPointer getVap() {
+        return vap;
     }
 }

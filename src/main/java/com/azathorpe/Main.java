@@ -1,7 +1,10 @@
 package com.azathorpe;
 
+import com.azathorpe.utils.struct.game.GameObject;
+import com.azathorpe.utils.struct.game.Mesh;
 import com.azathorpe.utils.struct.opengl.VAO;
 import com.azathorpe.utils.struct.opengl.VBO;
+import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
 import com.azathorpe.utils.struct.opengl.shader.Program;
 import com.azathorpe.utils.struct.opengl.shader.VertexShader;
@@ -224,16 +227,22 @@ public class Main {
 
         Matrix4f mvp = projection.mul(view).mul(model);
 
+        GameObject gameObject = new GameObject();
 
-        VAO vao = new VAO();
-        VBO vbo_vertex = new VBO(GL_ARRAY_BUFFER, vertex, GL_STATIC_DRAW);
-
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-
-        VBO vbo_fragColor = new VBO(GL_ARRAY_BUFFER, fragColor, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
+        gameObject.setMesh(new Mesh(
+                new VAO(),
+                new VBO(
+                        GL_ARRAY_BUFFER,
+                        vertex,
+                        GL_STATIC_DRAW,
+                        new VertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0)),
+                new VBO(
+                        GL_ARRAY_BUFFER,
+                        fragColor,
+                        GL_STATIC_DRAW,
+                        new VertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0)
+                )
+        ));
 
 
         Program program = new Program(
@@ -243,14 +252,10 @@ public class Main {
 
         int mvpLocation = glGetUniformLocation(program.getProgramId(), "MVP");
 
-        Matrix3f rotate = new Matrix3f(
-                (float) Math.cos(1), (float) -Math.sin(1), 0f,
-                (float) Math.sin(1), (float) Math.cos(1), 0f,
-                0f, 0f, 1f
-        );
-
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+
+            glUseProgram(program.getProgramId());
 
             try (MemoryStack stack = MemoryStack.stackPush()) {
                 FloatBuffer buffer = stack.mallocFloat(16);
@@ -262,9 +267,8 @@ public class Main {
                 glUniformMatrix4fv(mvpLocation, false, buffer);
             }
 
-            glUseProgram(program.getProgramId());
 
-            glBindVertexArray(vao.getId());
+            glBindVertexArray(gameObject.getMesh().getVao().getId());
             glDrawArrays(GL_TRIANGLES, 0, vertex.length / 3);
             glBindVertexArray(0);
 

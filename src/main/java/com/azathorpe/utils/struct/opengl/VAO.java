@@ -10,7 +10,6 @@ public class VAO {
 
     public VAO() {
         id = glGenVertexArrays();
-        bindVAO();
     }
 
     public int getId() {
