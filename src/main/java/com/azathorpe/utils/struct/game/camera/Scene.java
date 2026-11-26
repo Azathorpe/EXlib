@@ -58,11 +58,11 @@ public class Scene {
             gameObjects.remove(go);
     }
 
-    public void input() {
+    public void input(long window) {
         // 向所有GameObject广播操作
         for (GameObject gameObject : gameObjects)
             gameObject.getComponentSafely(InputComponent.class)
-                    .ifPresent(InputComponent::input);
+                    .ifPresent(ic -> ic.input(window));
     }
 
     public Camera getCamera() {

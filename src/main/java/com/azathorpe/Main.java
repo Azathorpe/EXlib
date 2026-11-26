@@ -43,8 +43,8 @@ public class Main {
     // The window handle
     private long window;
 
-    private int WINDOW_WIDTH = 300;
-    private int WINDOW_HEIGHT = 300;
+    private int WINDOW_WIDTH = 800;
+    private int WINDOW_HEIGHT = 600;
 
     public void run() {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
@@ -246,18 +246,24 @@ public class Main {
 
         gameObject.addComponent(new InputComponent() {
             @Override
-            public void input() {
+            public void input(long window) {
                 GameObject object = getOwner();
                 Transform transform = object.getComponent(Transform.class);
 
                 if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-                    transform.transform.translate(0, -0.1f, 0);
-                if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
                     transform.transform.translate(0, 0.1f, 0);
+                if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+                    transform.transform.translate(0, -0.1f, 0);
                 if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-                    transform.transform.translate(0.1f, 0, 0);
-                if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
                     transform.transform.translate(-0.1f, 0, 0);
+                if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+                    transform.transform.translate(0.1f, 0, 0);
+                if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+                    transform.transform.rotateX((float) Math.toRadians(1.0f));
+                if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+                    transform.transform.rotateY((float) Math.toRadians(1.0f));
+                if(glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+                    transform.transform.rotateZ((float) Math.toRadians(1.0f));
             }
         });
 
@@ -282,10 +288,10 @@ public class Main {
                         ));
 
         while (!glfwWindowShouldClose(window)) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer\
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             scene.render();
-            scene.input();
+            scene.input(window);
 
             glfwSwapBuffers(window); // swap the color buffers
 
