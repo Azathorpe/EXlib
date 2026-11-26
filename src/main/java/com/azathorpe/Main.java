@@ -236,22 +236,10 @@ public class Main {
         glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
 
 
-        VertexShader vs = new VertexShader(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/resources/VertexShader/vert.GLSL"));
-        vs.compileShader();
-
-        FragmentShader fs = new FragmentShader(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/resources/FragmentShader/frag.GLSL"));
-        fs.compileShader();
-
-        Program program = new Program();
-        program.attachShader(vs);
-        program.attachShader(fs);
-        program.linkShader();
-
-        program.detachShader(vs);
-        program.detachShader(fs);
-        vs.deleteShader();
-        fs.deleteShader();
-
+        Program program = new Program(
+                new VertexShader(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/resources/VertexShader/vert.GLSL")),
+                new FragmentShader(Path.of("/home/azathorpe/Projects/LWJGL/LWJGL_First/src/main/resources/FragmentShader/frag.GLSL"))
+        );
 
         int mvpLocation = glGetUniformLocation(program.getProgramId(), "MVP");
 

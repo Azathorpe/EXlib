@@ -38,11 +38,11 @@ public abstract class Shader {
      *
      * @param path 路径
      */
-    protected void loadShaderCode(Path path) throws IOException {
+    protected void loadShaderCode(Path path) {
         try {
             shaderSource = Files.readString(path);
         } catch (IOException e) {
-            throw new IOException("Failed to load shader: " + path, e);
+            throw new RuntimeException("Failed to load shader: " + path, e);
         }
     }
 
