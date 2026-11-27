@@ -88,16 +88,14 @@ public class Scene {
         gameObjects.addAll(List.of(gameObject));
     }
 
-    public void removeGameObject(List<GameObject> gameObject) {
-        for (GameObject go : gameObject)
-            gameObjects.remove(go);
-    }
-
     public void removeGameObject(GameObject... gameObject) {
         for (GameObject go : gameObject)
             gameObjects.remove(go);
     }
 
+    public GameObject[] getGameObject() {
+        return gameObjects.toArray(new GameObject[0]);
+    }
 
     public void init(GameContext context,Window window) {
         // 注册鼠标按键回调
@@ -138,9 +136,9 @@ public class Scene {
         mousePicker.update(context, colliders, worldX, worldY);
     }
 
-    public void exit(Window window) {
+    public void exit() {
         // 退出Scene
-        removeGameObject(gameObjects);
+        gameObjects.clear();
     }
 
     /**

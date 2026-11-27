@@ -1,6 +1,7 @@
 package org.impl.azathorpe.pong;
 
 import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
+import com.azathorpe.utils.struct.game.manage.Input;
 import com.azathorpe.utils.struct.game.manage.Scene;
 import com.azathorpe.utils.struct.game.manage.Window;
 import com.azathorpe.utils.struct.game.manage.game.Game;
@@ -31,8 +32,9 @@ import static org.lwjgl.system.MemoryStack.*;
 public class PongGame implements Game {
     private final Window window = new Window();
 
-    Scene menuScene;
+    Input input = new Input();
     Scene gameScene;
+    Scene menuScene;
     private GameStateMachine stateMachine;
 
     public void run() {
@@ -57,11 +59,13 @@ public class PongGame implements Game {
             glViewport(0, 0, width, height);
         });
 
+        gameScene = new GameScene(window);
         menuScene = new MenuScene(window);
 
-        gameScene = new GameScene(window);
-
-        GameContext ctx = new PongContext(menuScene, window, this::setState);
+        GameContext ctx = new PongContext(menuScene, input, window, (s) -> {
+            stateMachine.transitionTo(s);
+            stateMachine.switchScene(gameScene);
+        });
         stateMachine = new GameStateMachine(ctx, new MenuState());
     }
 

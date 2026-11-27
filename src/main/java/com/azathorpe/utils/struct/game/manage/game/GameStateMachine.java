@@ -1,5 +1,7 @@
 package com.azathorpe.utils.struct.game.manage.game;
 
+import com.azathorpe.utils.struct.game.manage.Scene;
+
 public class GameStateMachine {
     private GameState current;
     private final GameContext ctx;   // 门面，不依赖具体场景
@@ -22,5 +24,9 @@ public class GameStateMachine {
         current.exit(ctx);
         current = next;
         current.enter(ctx);
+    }
+
+    public void switchScene(Scene scene) {
+        ctx.getSceneManager().switchScene(scene);
     }
 }
