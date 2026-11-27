@@ -7,9 +7,15 @@ import com.azathorpe.utils.struct.game.manage.game.GameContext;
 import com.azathorpe.utils.struct.game.manage.game.GameState;
 
 public class MenuContext implements GameContext {
-    Scene scene = new Scene();
-    Input input = new Input();
-    Window window = new Window();
+    Scene scene;
+    Input input;
+    Window window;
+
+    public MenuContext(Scene scene, Input input, Window window) {
+        this.scene = scene;
+        this.input = input;
+        this.window = window;
+    }
 
     @Override
     public Scene getScene() {
@@ -22,12 +28,17 @@ public class MenuContext implements GameContext {
     }
 
     @Override
+    public Window getWindow() {
+        return window;
+    }
+
+    @Override
     public void transitionTo(GameState next) {
 
     }
 
     @Override
-    public long getWindow() {
-        return window.getWindow();
+    public long getHandle() {
+        return window.getHandle();
     }
 }

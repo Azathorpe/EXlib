@@ -1,25 +1,18 @@
 package org.impl.azathorpe.pong;
 
-import com.azathorpe.utils.struct.game.gameobj.GameObject;
-import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.manage.Scene;
-import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
 import com.azathorpe.utils.struct.game.manage.Window;
 import com.azathorpe.utils.struct.game.manage.game.Game;
 import com.azathorpe.utils.struct.game.manage.game.GameContext;
 import com.azathorpe.utils.struct.game.manage.game.GameStateMachine;
-import org.impl.azathorpe.pong.entities.Ball;
-import org.impl.azathorpe.pong.entities.Paddle;
 import org.impl.azathorpe.pong.scene.GameScene;
 import org.impl.azathorpe.pong.scene.MenuScene;
 import org.impl.azathorpe.pong.state.MenuState;
 import org.impl.azathorpe.pong.state.PongContext;
-import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 
-import java.awt.*;
 import java.nio.*;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -54,11 +47,11 @@ public class PongGame implements Game {
         try (MemoryStack stack = stackPush()) {
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
-            glfwGetFramebufferSize(window.getWindow(), w, h);   // ← 帧缓冲尺寸，不是窗口尺寸
+            glfwGetFramebufferSize(window.getHandle(), w, h);   // ← 帧缓冲尺寸，不是窗口尺寸
             glViewport(0, 0, w.get(0), h.get(0));
         }
 
-        glfwSetFramebufferSizeCallback(window.getWindow(), (win, width, height) -> {
+        glfwSetFramebufferSizeCallback(window.getHandle(), (win, width, height) -> {
             glViewport(0, 0, width, height);
         });
 
@@ -68,13 +61,13 @@ public class PongGame implements Game {
 
     @Override
     public void loop() {
-        while (!glfwWindowShouldClose(window.getWindow())) {
+        while (!glfwWindowShouldClose(window.getHandle())) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             stateMachine.render();
             stateMachine.update((float) glfwGetTime());
 
-            glfwSwapBuffers(window.getWindow()); // swap the color buffers
+            glfwSwapBuffers(window.getHandle()); // swap the color buffers
 
             glfwPollEvents();
         }

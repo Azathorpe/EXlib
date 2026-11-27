@@ -4,7 +4,7 @@ import com.azathorpe.utils.struct.game.gameobj.GameObject;
 import com.azathorpe.utils.struct.game.gameobj.Material;
 import com.azathorpe.utils.struct.game.gameobj.Mesh;
 import com.azathorpe.utils.struct.game.gameobj.Transform;
-import com.azathorpe.utils.struct.opengl.VAO;
+import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
@@ -69,5 +69,17 @@ public class MenuBar extends GameObject {
         ));
 
         this.addComponent(new Transform());
+
+        this.addComponent(new BoxCollider2D() {
+            @Override
+            public void onMouseEnter() {
+                System.out.println("OK");
+            }
+
+            @Override
+            public void onMouseExit() {
+                System.out.println("Exit");
+            }
+        });
     }
 }

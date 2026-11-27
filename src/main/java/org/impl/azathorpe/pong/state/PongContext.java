@@ -27,12 +27,17 @@ public class PongContext implements GameContext {
     }
 
     @Override
+    public Window getWindow() {
+        return window;
+    }
+
+    @Override
     public void transitionTo(GameState next) {
         next.enter(this);
     }
 
     @Override
-    public long getWindow() {
-        return window.getWindow();
+    public long getHandle() {
+        return window.getHandle();
     }
 }

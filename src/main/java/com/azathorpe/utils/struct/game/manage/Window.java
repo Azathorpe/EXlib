@@ -90,7 +90,7 @@ public class Window {
         glfwSetErrorCallback(null).free();
     }
 
-    public long getWindow() {
+    public long getHandle() {
         return window;
     }
 }

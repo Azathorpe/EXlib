@@ -35,6 +35,14 @@ public abstract class BoxCollider2D extends Component {
                 && Math.abs(getCenterY() - other.getCenterY()) < (halfHeight + other.halfHeight);
     }
 
+    /**
+     * 世界坐标点是否在 AABB 内
+     */
+    public boolean contains(float x, float y) {
+        return Math.abs(x - getCenterX()) <= halfWidth
+                && Math.abs(y - getCenterY()) <= halfHeight;
+    }
+
     // 回调（子类实现）
     public void onEnterCollider2D(BoxCollider2D other) {
     }
@@ -43,5 +51,12 @@ public abstract class BoxCollider2D extends Component {
     }
 
     public void onExitCollider2D(BoxCollider2D other) {
+    }
+
+    // 鼠标回调（可选，也可以放在单独的接口里）
+    public void onMouseEnter() {
+    }
+
+    public void onMouseExit() {
     }
 }

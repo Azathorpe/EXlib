@@ -290,7 +290,8 @@ public class Main {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             scene.render();
-            scene.update(window);
+            //FIXME
+//            scene.update(window);
 
             glfwSwapBuffers(window); // swap the color buffers
 
