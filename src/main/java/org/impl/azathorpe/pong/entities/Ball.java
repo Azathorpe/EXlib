@@ -144,6 +144,7 @@ public class Ball extends GameObject {
             public void onEnterCollider2D(BoxCollider2D other) {
                 if (other.getOwner() instanceof Paddle) {
                     System.out.println("Collider!!");
+                    direction.x = -direction.x;
                 }
             }
         });
