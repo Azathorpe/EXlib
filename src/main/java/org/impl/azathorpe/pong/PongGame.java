@@ -61,7 +61,6 @@ public class PongGame implements Game {
             glViewport(0, 0, width, height);
         });
 
-
         GameContext ctx = new PongContext(scene, window, this::setState);
         stateMachine = new GameStateMachine(ctx, new MenuState());
     }
@@ -73,9 +72,6 @@ public class PongGame implements Game {
 
             stateMachine.render();
             stateMachine.update((float) glfwGetTime());
-
-//            scene.render();
-//            scene.update(window.getWindow());
 
             glfwSwapBuffers(window.getWindow()); // swap the color buffers
 
