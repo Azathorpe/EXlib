@@ -1,8 +1,12 @@
 package com.azathorpe.utils.struct.game.camera;
 
-import com.azathorpe.utils.struct.game.*;
-import com.azathorpe.utils.struct.game.components.BoxCollider2D;
-import com.azathorpe.utils.struct.game.components.UpdateComponent;
+import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
+import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
+import com.azathorpe.utils.struct.game.gameobj.GameObject;
+import com.azathorpe.utils.struct.game.gameobj.Material;
+import com.azathorpe.utils.struct.game.gameobj.Mesh;
+import com.azathorpe.utils.struct.game.gameobj.Transform;
+import com.azathorpe.utils.struct.game.system.PhysicsSystem;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
 

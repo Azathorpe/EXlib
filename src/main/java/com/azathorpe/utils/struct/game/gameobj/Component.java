@@ -1,4 +1,4 @@
-package com.azathorpe.utils.struct.game;
+package com.azathorpe.utils.struct.game.gameobj;
 
 /**
  * 组件基类

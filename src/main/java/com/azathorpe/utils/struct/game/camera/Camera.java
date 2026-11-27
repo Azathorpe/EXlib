@@ -1,6 +1,6 @@
 package com.azathorpe.utils.struct.game.camera;
 
-import com.azathorpe.utils.struct.game.Component;
+import com.azathorpe.utils.struct.game.gameobj.Component;
 import org.joml.Matrix4f;
 
 public class Camera extends Component {

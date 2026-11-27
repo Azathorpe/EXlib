@@ -1,6 +1,6 @@
-package com.azathorpe.utils.struct.game.components;
+package com.azathorpe.utils.struct.game.gameobj.components;
 
-import com.azathorpe.utils.struct.game.Component;
+import com.azathorpe.utils.struct.game.gameobj.Component;
 
 /**
  * 每帧更新调用所有挂有这个组件的对象

@@ -1,12 +1,12 @@
 package com.azathorpe;
 
-import com.azathorpe.utils.struct.game.GameObject;
-import com.azathorpe.utils.struct.game.Material;
-import com.azathorpe.utils.struct.game.Mesh;
-import com.azathorpe.utils.struct.game.Transform;
+import com.azathorpe.utils.struct.game.gameobj.GameObject;
+import com.azathorpe.utils.struct.game.gameobj.Material;
+import com.azathorpe.utils.struct.game.gameobj.Mesh;
+import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.camera.Camera;
 import com.azathorpe.utils.struct.game.camera.Scene;
-import com.azathorpe.utils.struct.game.components.UpdateComponent;
+import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
 import com.azathorpe.utils.struct.opengl.VAO;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;

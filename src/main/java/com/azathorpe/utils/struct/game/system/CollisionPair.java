@@ -1,6 +1,6 @@
-package com.azathorpe.utils.struct.game;
+package com.azathorpe.utils.struct.game.system;
 
-import com.azathorpe.utils.struct.game.components.BoxCollider2D;
+import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
 
 public class CollisionPair {
     final BoxCollider2D a, b;

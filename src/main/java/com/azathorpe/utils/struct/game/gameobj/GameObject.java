@@ -1,6 +1,5 @@
-package com.azathorpe.utils.struct.game;
+package com.azathorpe.utils.struct.game.gameobj;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

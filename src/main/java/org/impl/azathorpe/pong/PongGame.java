@@ -1,9 +1,9 @@
 package org.impl.azathorpe.pong;
 
-import com.azathorpe.utils.struct.game.GameObject;
-import com.azathorpe.utils.struct.game.Transform;
+import com.azathorpe.utils.struct.game.gameobj.GameObject;
+import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.camera.Scene;
-import com.azathorpe.utils.struct.game.components.UpdateComponent;
+import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
 import org.impl.azathorpe.pong.entities.Ball;
 import org.impl.azathorpe.pong.entities.Paddle;
 import org.lwjgl.*;

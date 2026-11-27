@@ -1,4 +1,4 @@
-package com.azathorpe.utils.struct.game;
+package com.azathorpe.utils.struct.game.gameobj;
 
 import com.azathorpe.utils.struct.opengl.VAO;
 import com.azathorpe.utils.struct.opengl.VBO;

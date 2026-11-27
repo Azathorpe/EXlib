@@ -1,4 +1,4 @@
-package com.azathorpe.utils.struct.game;
+package com.azathorpe.utils.struct.game.gameobj;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;

@@ -1,21 +1,17 @@
 package org.impl.azathorpe.pong.entities;
 
-import com.azathorpe.utils.struct.game.GameObject;
-import com.azathorpe.utils.struct.game.Material;
-import com.azathorpe.utils.struct.game.Mesh;
-import com.azathorpe.utils.struct.game.Transform;
-import com.azathorpe.utils.struct.game.components.BoxCollider2D;
-import com.azathorpe.utils.struct.opengl.VAO;
+import com.azathorpe.utils.struct.game.gameobj.GameObject;
+import com.azathorpe.utils.struct.game.gameobj.Material;
+import com.azathorpe.utils.struct.game.gameobj.Mesh;
+import com.azathorpe.utils.struct.game.gameobj.Transform;
+import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
 import com.azathorpe.utils.struct.opengl.shader.Program;
 import com.azathorpe.utils.struct.opengl.shader.VertexShader;
-import org.joml.Matrix4f;
 
-import java.nio.FloatBuffer;
 import java.nio.file.Path;
-import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL11C.GL_FLOAT;
 import static org.lwjgl.opengl.GL15C.GL_ARRAY_BUFFER;
