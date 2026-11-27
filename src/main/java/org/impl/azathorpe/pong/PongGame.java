@@ -1,46 +1,28 @@
 package org.impl.azathorpe.pong;
 
 import com.azathorpe.utils.struct.game.GameObject;
-import com.azathorpe.utils.struct.game.Material;
-import com.azathorpe.utils.struct.game.Mesh;
 import com.azathorpe.utils.struct.game.Transform;
 import com.azathorpe.utils.struct.game.camera.Scene;
-import com.azathorpe.utils.struct.game.components.InputComponent;
-import com.azathorpe.utils.struct.opengl.VAO;
-import com.azathorpe.utils.struct.opengl.VBO;
-import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
-import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
-import com.azathorpe.utils.struct.opengl.shader.Program;
-import com.azathorpe.utils.struct.opengl.shader.VertexShader;
+import com.azathorpe.utils.struct.game.components.UpdateComponent;
 import org.impl.azathorpe.pong.entities.Ball;
 import org.impl.azathorpe.pong.entities.Paddle;
-import org.joml.Matrix3f;
-import org.joml.Vector3f;
-import org.joml.Vector3fc;
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
-import org.joml.Matrix4f;
 
 
 import java.awt.*;
 import java.nio.*;
-import java.nio.file.Path;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15C.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15C.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL15C.glBufferData;
 import static org.lwjgl.opengl.GL15C.glGenBuffers;
-import static org.lwjgl.opengl.GL20C.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20C.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20C.glUniformMatrix4fv;
-import static org.lwjgl.opengl.GL20C.glUseProgram;
 import static org.lwjgl.opengl.GL20C.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30C.glBindVertexArray;
 import static org.lwjgl.opengl.GL30C.glGenVertexArrays;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -129,7 +111,7 @@ public class PongGame {
         float playerSpeed = 0.5f;
 
         Paddle player1 = new Paddle(150, 0, 0);
-        player1.addComponent(new InputComponent() {
+        player1.addComponent(new UpdateComponent() {
             @Override
             public void input(long window) {
                 GameObject parent = getOwner();
@@ -145,7 +127,7 @@ public class PongGame {
         player1.getComponent(Transform.class).position.set(-0.9f, 0, 0);
 
         Paddle player2 = new Paddle(0, 150, 0);
-        player2.addComponent(new InputComponent() {
+        player2.addComponent(new UpdateComponent() {
             @Override
             public void input(long window) {
                 GameObject parent = getOwner();
@@ -188,7 +170,7 @@ public class PongGame {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             scene.render();
-            scene.input(window);
+            scene.update(window);
 
             glfwSwapBuffers(window); // swap the color buffers
 
