@@ -6,16 +6,17 @@ import com.azathorpe.utils.struct.game.manage.game.GameState;
 public class MenuState implements GameState {
     @Override
     public void enter(GameContext ctx) {
+        ctx.getScene().init(ctx, ctx.getWindow());
     }
 
     @Override
     public void exit(GameContext ctx) {
-
+        ctx.getScene().exit(ctx.getWindow());
     }
 
     @Override
     public void update(GameContext ctx, float dt) {
-        ctx.getScene().update(ctx.getWindow());
+        ctx.getScene().update(ctx, ctx.getWindow());
     }
 
     @Override

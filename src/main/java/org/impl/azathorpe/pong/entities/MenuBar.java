@@ -5,11 +5,13 @@ import com.azathorpe.utils.struct.game.gameobj.Material;
 import com.azathorpe.utils.struct.game.gameobj.Mesh;
 import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
+import com.azathorpe.utils.struct.game.manage.game.GameContext;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
 import com.azathorpe.utils.struct.opengl.shader.Program;
 import com.azathorpe.utils.struct.opengl.shader.VertexShader;
+import org.lwjgl.glfw.GLFW;
 
 import java.nio.file.Path;
 
@@ -20,13 +22,13 @@ import static org.lwjgl.opengl.GL15C.GL_STATIC_DRAW;
 public class MenuBar extends GameObject {
     float[] vertex = new float[]{
             // Upper Right
-            0.3f, 0.3f, 0f,
-            -0.3f, 0.3f, 0f,
-            0.3f, -0.3f, 0f,
+            0.3f, 0.15f, 0f,
+            -0.3f, 0.15f, 0f,
+            0.3f, -0.15f, 0f,
             // Down Left
-            -0.3f, -0.3f, 0f,
-            0.3f, -0.3f, 0f,
-            -0.3f, 0.3f, 0f,
+            -0.3f, -0.15f, 0f,
+            0.3f, -0.15f, 0f,
+            -0.3f, 0.15f, 0f,
     };
 
     float[] color = new float[]{
@@ -69,17 +71,5 @@ public class MenuBar extends GameObject {
         ));
 
         this.addComponent(new Transform());
-
-        this.addComponent(new BoxCollider2D() {
-            @Override
-            public void onMouseEnter() {
-                System.out.println("OK");
-            }
-
-            @Override
-            public void onMouseExit() {
-                System.out.println("Exit");
-            }
-        });
     }
 }

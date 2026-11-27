@@ -6,7 +6,7 @@ import com.azathorpe.utils.struct.game.gameobj.Transform;
 /**
  * 2D 碰撞箱
  */
-public abstract class BoxCollider2D extends Component {
+public abstract class BoxCollider2D extends Component implements MouseInteractive {
     /**
      * 碰撞箱尺寸（局部半宽/半高，不含位置）
      */
@@ -51,12 +51,5 @@ public abstract class BoxCollider2D extends Component {
     }
 
     public void onExitCollider2D(BoxCollider2D other) {
-    }
-
-    // 鼠标回调（可选，也可以放在单独的接口里）
-    public void onMouseEnter() {
-    }
-
-    public void onMouseExit() {
     }
 }

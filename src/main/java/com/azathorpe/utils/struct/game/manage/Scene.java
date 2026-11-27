@@ -7,16 +7,18 @@ import com.azathorpe.utils.struct.game.gameobj.Material;
 import com.azathorpe.utils.struct.game.gameobj.Mesh;
 import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.manage.debugger.DebugRenderer;
+import com.azathorpe.utils.struct.game.manage.game.GameContext;
 import com.azathorpe.utils.struct.game.system.PhysicsSystem;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20C.*;
@@ -27,10 +29,6 @@ public class Scene {
     private final PhysicsSystem physics = new PhysicsSystem();
     Camera camera = new Camera();
     MousePicker mousePicker = new MousePicker();
-
-    // 每帧
-    double[] mx = new double[1], my = new double[1];
-
 
     // Debug 模式
     boolean debugEnabled = true;
@@ -90,12 +88,27 @@ public class Scene {
         gameObjects.addAll(List.of(gameObject));
     }
 
+    public void removeGameObject(List<GameObject> gameObject) {
+        for (GameObject go : gameObject)
+            gameObjects.remove(go);
+    }
+
     public void removeGameObject(GameObject... gameObject) {
         for (GameObject go : gameObject)
             gameObjects.remove(go);
     }
 
-    public void update(Window window) {
+
+    public void init(GameContext context,Window window) {
+        // 注册鼠标按键回调
+        // TODO: 移动到Input里面去
+        glfwSetMouseButtonCallback(window.getHandle(), (win, button, action, mods) -> {
+            boolean pressed = (action == GLFW_PRESS);
+            mousePicker.onMouseButton(context, button, pressed);
+        });
+    }
+
+    public void update(GameContext context,Window window) {
         // 向所有GameObject广播操作
         for (GameObject gameObject : gameObjects)
             gameObject.getComponentSafely(UpdateComponent.class)
@@ -109,6 +122,8 @@ public class Scene {
         // 2. 物理检测
         physics.update(colliders);
 
+        // 需要先知道当前鼠标世界坐标（用最新 cursor pos）
+        double[] mx = new double[1], my = new double[1];
         glfwGetCursorPos(window.getHandle(), mx, my);
         // 屏幕坐标 → 世界坐标（取决于你的投影）
         float worldX = (float) mx[0];
@@ -119,7 +134,13 @@ public class Scene {
         worldX = vector3f.x;
         worldY = vector3f.y;
 
-        mousePicker.update(colliders, worldX, worldY);
+        // 更新 hover（保证 pressed 时 hovered 是最新的）
+        mousePicker.update(context, colliders, worldX, worldY);
+    }
+
+    public void exit(Window window) {
+        // 退出Scene
+        removeGameObject(gameObjects);
     }
 
     /**

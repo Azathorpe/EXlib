@@ -1,14 +1,17 @@
 package org.impl.azathorpe.pong;
 
+import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
 import com.azathorpe.utils.struct.game.manage.Scene;
 import com.azathorpe.utils.struct.game.manage.Window;
 import com.azathorpe.utils.struct.game.manage.game.Game;
 import com.azathorpe.utils.struct.game.manage.game.GameContext;
 import com.azathorpe.utils.struct.game.manage.game.GameStateMachine;
+import org.impl.azathorpe.pong.entities.MenuBar;
 import org.impl.azathorpe.pong.scene.GameScene;
 import org.impl.azathorpe.pong.scene.MenuScene;
 import org.impl.azathorpe.pong.state.MenuState;
 import org.impl.azathorpe.pong.state.PongContext;
+import org.impl.azathorpe.pong.state.RunState;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
@@ -28,6 +31,8 @@ import static org.lwjgl.system.MemoryStack.*;
 public class PongGame implements Game {
     private final Window window = new Window();
 
+    Scene menuScene;
+    Scene gameScene;
     private GameStateMachine stateMachine;
 
     public void run() {
@@ -40,10 +45,7 @@ public class PongGame implements Game {
     public void init() {
         window.run();
         GL.createCapabilities();
-
-        Scene menuScene = new MenuScene(window);
-        Scene gameScene = new GameScene(window);
-
+        // 设置视点
         try (MemoryStack stack = stackPush()) {
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
@@ -54,6 +56,10 @@ public class PongGame implements Game {
         glfwSetFramebufferSizeCallback(window.getHandle(), (win, width, height) -> {
             glViewport(0, 0, width, height);
         });
+
+        menuScene = new MenuScene(window);
+
+        gameScene = new GameScene(window);
 
         GameContext ctx = new PongContext(menuScene, window, this::setState);
         stateMachine = new GameStateMachine(ctx, new MenuState());
