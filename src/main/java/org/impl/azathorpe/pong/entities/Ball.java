@@ -149,5 +149,8 @@ public class Ball extends GameObject {
             }
         });
 
+        this.getComponent(BoxCollider2D.class).halfWidth = 0.01f;
+        this.getComponent(BoxCollider2D.class).halfHeight = 0.01f;
+
     }
 }

@@ -1,4 +1,4 @@
-package com.azathorpe.utils.struct.game.camera;
+package com.azathorpe.utils.struct.game.manage;
 
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
 import com.azathorpe.utils.struct.opengl.shader.Program;

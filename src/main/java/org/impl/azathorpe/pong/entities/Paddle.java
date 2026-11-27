@@ -71,7 +71,9 @@ public class Paddle extends GameObject {
 
         this.addComponent(new Transform());
 
-        this.addComponent(new BoxCollider2D() {
-        });
+        this.addComponent(new BoxCollider2D(){});
+
+        this.getComponent(BoxCollider2D.class).halfWidth = 0.01f;
+        this.getComponent(BoxCollider2D.class).halfHeight = 0.1f;
     }
 }

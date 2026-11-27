@@ -1,4 +1,4 @@
-package com.azathorpe.utils.struct.game.camera;
+package com.azathorpe.utils.struct.game.manage;
 
 import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
 import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
