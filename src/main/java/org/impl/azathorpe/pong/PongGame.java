@@ -10,6 +10,7 @@ import com.azathorpe.utils.struct.game.manage.game.GameContext;
 import com.azathorpe.utils.struct.game.manage.game.GameStateMachine;
 import org.impl.azathorpe.pong.entities.Ball;
 import org.impl.azathorpe.pong.entities.Paddle;
+import org.impl.azathorpe.pong.scene.GameScene;
 import org.impl.azathorpe.pong.scene.MenuScene;
 import org.impl.azathorpe.pong.state.MenuState;
 import org.impl.azathorpe.pong.state.PongContext;
@@ -34,7 +35,6 @@ import static org.lwjgl.system.MemoryStack.*;
 public class PongGame implements Game {
     private final Window window = new Window();
 
-    private Scene scene;
     private GameStateMachine stateMachine;
 
     public void run() {
@@ -48,7 +48,8 @@ public class PongGame implements Game {
         window.run();
         GL.createCapabilities();
 
-        scene = new MenuScene(window);
+        Scene menuScene = new MenuScene(window);
+        Scene gameScene = new GameScene(window);
 
         try (MemoryStack stack = stackPush()) {
             IntBuffer w = stack.mallocInt(1);
@@ -61,7 +62,7 @@ public class PongGame implements Game {
             glViewport(0, 0, width, height);
         });
 
-        GameContext ctx = new PongContext(scene, window, this::setState);
+        GameContext ctx = new PongContext(menuScene, window, this::setState);
         stateMachine = new GameStateMachine(ctx, new MenuState());
     }
 

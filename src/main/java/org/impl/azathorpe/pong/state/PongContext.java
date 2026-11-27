@@ -28,7 +28,7 @@ public class PongContext implements GameContext {
 
     @Override
     public void transitionTo(GameState next) {
-
+        next.enter(this);
     }
 
     @Override
