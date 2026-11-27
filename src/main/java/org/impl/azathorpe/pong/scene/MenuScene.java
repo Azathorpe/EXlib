@@ -19,6 +19,10 @@ import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 public class MenuScene extends Scene {
     float playerSpeed = 0.5f;
 
+    public MenuScene(Window window) {
+        super(window);
+    }
+
     @Override
     public void putGameObject(Window window) {
         Paddle player1 = new Paddle(150, 0, 0);

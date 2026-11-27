@@ -29,6 +29,14 @@ public class Scene {
     boolean debugEnabled = true;
     DebugRenderer debugRenderer = new DebugRenderer();
 
+    public Scene() {
+        putGameObject();
+    }
+
+    public Scene(Window window) {
+        putGameObject(window);
+    }
+
     public void render() {
         for (GameObject gameObject : gameObjects) {
             Transform transform = gameObject.getComponent(Transform.class);
@@ -99,6 +107,10 @@ public class Scene {
      * 放置物体调用这个方法
      */
     public void putGameObject(Window window) {
+
+    }
+
+    public void putGameObject(){
 
     }
 

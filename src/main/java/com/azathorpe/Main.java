@@ -7,6 +7,7 @@ import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.manage.Camera;
 import com.azathorpe.utils.struct.game.manage.Scene;
 import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
+import com.azathorpe.utils.struct.game.manage.Window;
 import com.azathorpe.utils.struct.opengl.VAO;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
@@ -265,7 +266,7 @@ public class Main {
             }
         });
 
-        Scene scene = new Scene();
+        Scene scene = new Scene(new Window());
         scene.addGameObject(gameObject);
 
         scene.setCamera(new Camera());
