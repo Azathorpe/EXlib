@@ -4,7 +4,7 @@ import com.azathorpe.utils.struct.game.GameObject;
 import com.azathorpe.utils.struct.game.Material;
 import com.azathorpe.utils.struct.game.Mesh;
 import com.azathorpe.utils.struct.game.Transform;
-import com.azathorpe.utils.struct.game.components.InputComponent;
+import com.azathorpe.utils.struct.game.components.UpdateComponent;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
 
@@ -43,7 +43,6 @@ public class Scene {
             }
 
             glBindVertexArray(mesh.getVao().getId());
-            // FIXME: FIX HERE
             glDrawArrays(GL_TRIANGLES, 0, mesh.getVertexCount());
             glBindVertexArray(0);
         }
@@ -58,10 +57,10 @@ public class Scene {
             gameObjects.remove(go);
     }
 
-    public void input(long window) {
+    public void update(long window) {
         // 向所有GameObject广播操作
         for (GameObject gameObject : gameObjects)
-            gameObject.getComponentSafely(InputComponent.class)
+            gameObject.getComponentSafely(UpdateComponent.class)
                     .ifPresent(ic -> ic.input(window));
     }
 
