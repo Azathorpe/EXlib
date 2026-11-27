@@ -6,6 +6,7 @@ import com.azathorpe.utils.struct.game.gameobj.GameObject;
 import com.azathorpe.utils.struct.game.gameobj.Material;
 import com.azathorpe.utils.struct.game.gameobj.Mesh;
 import com.azathorpe.utils.struct.game.gameobj.Transform;
+import com.azathorpe.utils.struct.game.manage.game.GameStateMachine;
 import com.azathorpe.utils.struct.game.system.PhysicsSystem;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
@@ -23,6 +24,8 @@ public class Scene {
     List<GameObject> gameObjects = new ArrayList<>();
     private final PhysicsSystem physics = new PhysicsSystem();
     Camera camera = new Camera();
+
+    GameStateMachine gameStateMachine = new GameStateMachine();
 
     // Debug 模式
     boolean debugEnabled = true;
