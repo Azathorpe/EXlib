@@ -6,6 +6,7 @@ import com.azathorpe.utils.struct.game.gameobj.GameObject;
 import com.azathorpe.utils.struct.game.gameobj.Material;
 import com.azathorpe.utils.struct.game.gameobj.Mesh;
 import com.azathorpe.utils.struct.game.gameobj.Transform;
+import com.azathorpe.utils.struct.game.manage.debugger.DebugRenderer;
 import com.azathorpe.utils.struct.game.system.PhysicsSystem;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
