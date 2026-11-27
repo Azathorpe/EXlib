@@ -6,7 +6,7 @@ import com.azathorpe.utils.struct.game.Mesh;
 import com.azathorpe.utils.struct.game.Transform;
 import com.azathorpe.utils.struct.game.camera.Camera;
 import com.azathorpe.utils.struct.game.camera.Scene;
-import com.azathorpe.utils.struct.game.components.InputComponent;
+import com.azathorpe.utils.struct.game.components.UpdateComponent;
 import com.azathorpe.utils.struct.opengl.VAO;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
@@ -242,7 +242,7 @@ public class Main {
         gameObject.getComponent(Transform.class).position.z = 1;
         gameObject.getComponent(Transform.class).rotation.set(0, 1, 0);
 
-        gameObject.addComponent(new InputComponent() {
+        gameObject.addComponent(new UpdateComponent() {
             @Override
             public void input(long window) {
                 GameObject object = getOwner();
@@ -289,7 +289,7 @@ public class Main {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             scene.render();
-            scene.input(window);
+            scene.update(window);
 
             glfwSwapBuffers(window); // swap the color buffers
 
