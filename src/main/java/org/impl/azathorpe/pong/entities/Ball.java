@@ -4,6 +4,7 @@ import com.azathorpe.utils.struct.game.GameObject;
 import com.azathorpe.utils.struct.game.Material;
 import com.azathorpe.utils.struct.game.Mesh;
 import com.azathorpe.utils.struct.game.Transform;
+import com.azathorpe.utils.struct.game.components.InputComponent;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
@@ -105,6 +106,13 @@ public class Ball extends GameObject {
                 )));
 
         this.addComponent(new Transform());
+
+        this.addComponent(new InputComponent() {
+            @Override
+            public void input(long window) {
+
+            }
+        });
 
     }
 }
