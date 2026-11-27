@@ -4,6 +4,7 @@ import com.azathorpe.utils.struct.game.gameobj.GameObject;
 import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.manage.Scene;
 import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
+import com.azathorpe.utils.struct.game.manage.Window;
 import org.impl.azathorpe.pong.entities.Ball;
 import org.impl.azathorpe.pong.entities.Paddle;
 import org.lwjgl.*;
@@ -28,81 +29,15 @@ import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public class PongGame {
-
-    // The window handle
-    private long window;
-
     private int WINDOW_WIDTH = 800;
     private int WINDOW_HEIGHT = 600;
 
+    private final Window window = new Window();
+
     public void run() {
-        System.out.println("Hello LWJGL " + Version.getVersion() + "!");
-
-        init();
+        window.run();
         loop();
-
-        // Free the window callbacks and destroy the window
-        glfwFreeCallbacks(window);
-        glfwDestroyWindow(window);
-
-        // Terminate GLFW and free the error callback
-        glfwTerminate();
-        glfwSetErrorCallback(null).free();
-    }
-
-    private void init() {
-        // Setup an error callback. The default implementation
-        // will print the error message in System.err.
-        GLFWErrorCallback.createPrint(System.err).set();
-
-        // Initialize GLFW. Most GLFW functions will not work before doing this.
-        if (!glfwInit())
-            throw new IllegalStateException("Unable to initialize GLFW");
-
-        // Configure GLFW
-        glfwDefaultWindowHints(); // optional, the current window hints are already the default
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
-
-        // Create the window
-        window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Pong Game -- By Azathorpe ♥️", NULL, NULL);
-        if (window == NULL)
-            throw new RuntimeException("Failed to create the GLFW window");
-
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-        });
-
-        // Get the thread stack and push a new frame
-        try (MemoryStack stack = stackPush()) {
-            IntBuffer pWidth = stack.mallocInt(1); // int*
-            IntBuffer pHeight = stack.mallocInt(1); // int*
-
-            // Get the window size passed to glfwCreateWindow
-            if (glfwGetPlatform() != GLFW_PLATFORM_WAYLAND)
-                glfwGetWindowSize(window, pWidth, pHeight);
-
-            // Get the resolution of the primary monitor
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            // Center the window
-            if (glfwGetPlatform() != GLFW_PLATFORM_WAYLAND)
-                glfwSetWindowPos(
-                        window,
-                        (vidmode.width() - pWidth.get(0)) / 2,
-                        (vidmode.height() - pHeight.get(0)) / 2
-                );
-        } // the stack frame is popped automatically
-
-        // Make the OpenGL context current
-        glfwMakeContextCurrent(window);
-        // Enable v-sync
-        glfwSwapInterval(1);
-
-        // Make the window visible
-        glfwShowWindow(window);
+        window.quit();
     }
 
     private void loop() {
@@ -158,21 +93,21 @@ public class PongGame {
         try (MemoryStack stack = stackPush()) {
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
-            glfwGetFramebufferSize(window, w, h);   // ← 帧缓冲尺寸，不是窗口尺寸
+            glfwGetFramebufferSize(window.getWindow(), w, h);   // ← 帧缓冲尺寸，不是窗口尺寸
             glViewport(0, 0, w.get(0), h.get(0));
         }
 
-        glfwSetFramebufferSizeCallback(window, (win, width, height) -> {
+        glfwSetFramebufferSizeCallback(window.getWindow(), (win, width, height) -> {
             glViewport(0, 0, width, height);
         });
 
-        while (!glfwWindowShouldClose(window)) {
+        while (!glfwWindowShouldClose(window.getWindow())) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             scene.render();
-            scene.update(window);
+            scene.update(window.getWindow());
 
-            glfwSwapBuffers(window); // swap the color buffers
+            glfwSwapBuffers(window.getWindow()); // swap the color buffers
 
             glfwPollEvents();
         }
