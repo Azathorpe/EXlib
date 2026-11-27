@@ -1,5 +1,8 @@
 package com.azathorpe.utils.struct.game;
 
+/**
+ * 组件基类
+ */
 public abstract class Component {
     protected GameObject owner;
 
