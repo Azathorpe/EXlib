@@ -1,9 +1,7 @@
 package com.azathorpe.utils.struct.game.camera;
 
-import com.azathorpe.utils.struct.game.GameObject;
-import com.azathorpe.utils.struct.game.Material;
-import com.azathorpe.utils.struct.game.Mesh;
-import com.azathorpe.utils.struct.game.Transform;
+import com.azathorpe.utils.struct.game.*;
+import com.azathorpe.utils.struct.game.components.BoxCollider2D;
 import com.azathorpe.utils.struct.game.components.UpdateComponent;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
@@ -19,6 +17,7 @@ import static org.lwjgl.opengl.GL30C.glBindVertexArray;
 
 public class Scene {
     List<GameObject> gameObjects = new ArrayList<>();
+    private final PhysicsSystem physics = new PhysicsSystem();
     Camera camera = new Camera();
 
     public void render() {
@@ -62,6 +61,14 @@ public class Scene {
         for (GameObject gameObject : gameObjects)
             gameObject.getComponentSafely(UpdateComponent.class)
                     .ifPresent(ic -> ic.input(window));
+
+        // 1. 收集所有 BoxCollider2D
+        List<BoxCollider2D> colliders = new ArrayList<>();
+        for (GameObject go : gameObjects) {
+            go.getComponentSafely(BoxCollider2D.class).ifPresent(colliders::add);
+        }
+        // 2. 物理检测
+        physics.update(colliders);
     }
 
     public Camera getCamera() {

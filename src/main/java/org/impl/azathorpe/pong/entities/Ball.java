@@ -4,12 +4,14 @@ import com.azathorpe.utils.struct.game.GameObject;
 import com.azathorpe.utils.struct.game.Material;
 import com.azathorpe.utils.struct.game.Mesh;
 import com.azathorpe.utils.struct.game.Transform;
-import com.azathorpe.utils.struct.game.components.InputComponent;
+import com.azathorpe.utils.struct.game.components.BoxCollider2D;
+import com.azathorpe.utils.struct.game.components.UpdateComponent;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
 import com.azathorpe.utils.struct.opengl.shader.Program;
 import com.azathorpe.utils.struct.opengl.shader.VertexShader;
+import org.joml.Vector3f;
 
 import java.awt.*;
 import java.nio.file.Path;
@@ -21,6 +23,9 @@ import static org.lwjgl.opengl.GL15C.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15C.GL_STATIC_DRAW;
 
 public class Ball extends GameObject {
+    Vector3f direction = new Vector3f(-1, 0, 0);
+    float ballSpeed = 0.01f;
+
     /**
      * 生成球体顶点位置数组（每顶点 3 float）
      */
@@ -107,10 +112,39 @@ public class Ball extends GameObject {
 
         this.addComponent(new Transform());
 
-        this.addComponent(new InputComponent() {
+        this.addComponent(new UpdateComponent() {
             @Override
             public void input(long window) {
+                GameObject owner = getOwner();
 
+                Vector3f delta = new Vector3f(direction).mul(ballSpeed);
+                owner.getComponent(Transform.class).position.add(delta);
+
+                Vector3f pos = owner.getComponent(Transform.class).position;
+                // 上下边界反弹（可视区 y ∈ [-1, 1]，球半径 0.2 已烘焙进顶点）
+                float bound = 1.0f - radius;   // 需要知道球的半径
+                if (pos.y > bound) {
+                    pos.y = bound;
+                    direction.y = -direction.y;
+                }
+                if (pos.y < -bound) {
+                    pos.y = -bound;
+                    direction.y = -direction.y;
+                }
+                // 左右边界得分/重置（或反弹）
+                if (pos.x > 1.0f || pos.x < -1.0f) {
+                    /* 重置球到中心 */
+
+                }
+            }
+        });
+
+        this.addComponent(new BoxCollider2D() {
+            @Override
+            public void onEnterCollider2D(BoxCollider2D other) {
+                if (other.getOwner() instanceof Paddle) {
+                    System.out.println("Collider!!");
+                }
             }
         });
 

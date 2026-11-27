@@ -4,6 +4,7 @@ import com.azathorpe.utils.struct.game.GameObject;
 import com.azathorpe.utils.struct.game.Material;
 import com.azathorpe.utils.struct.game.Mesh;
 import com.azathorpe.utils.struct.game.Transform;
+import com.azathorpe.utils.struct.game.components.BoxCollider2D;
 import com.azathorpe.utils.struct.opengl.VAO;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
@@ -73,5 +74,8 @@ public class Paddle extends GameObject {
         ));
 
         this.addComponent(new Transform());
+
+        this.addComponent(new BoxCollider2D() {
+        });
     }
 }
