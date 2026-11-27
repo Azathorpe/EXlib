@@ -11,6 +11,7 @@ import com.azathorpe.utils.struct.game.manage.game.GameStateMachine;
 import org.impl.azathorpe.pong.entities.Ball;
 import org.impl.azathorpe.pong.entities.Paddle;
 import org.impl.azathorpe.pong.state.MenuState;
+import org.impl.azathorpe.pong.state.PongContext;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
@@ -30,12 +31,8 @@ import static org.lwjgl.opengl.GL30C.glGenVertexArrays;
 import static org.lwjgl.system.MemoryStack.*;
 
 public class PongGame implements Game {
-    private int WINDOW_WIDTH = 800;
-    private int WINDOW_HEIGHT = 600;
-
     private final Window window = new Window();
 
-    float playerSpeed = 0.5f;
     private Scene scene;
     private GameStateMachine stateMachine;
 
@@ -52,48 +49,7 @@ public class PongGame implements Game {
 
         scene = new Scene();
 
-        Paddle player1 = new Paddle(150, 0, 0);
-        player1.addComponent(new UpdateComponent() {
-            @Override
-            public void input(long window) {
-                GameObject parent = getOwner();
-                Transform transform = parent.getComponent(Transform.class);
-                if (GLFW.glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-                    if (transform.position.y <= 0.9)
-                        transform.position.add(0, 0.1f * playerSpeed, 0);
-                if (GLFW.glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-                    if (transform.position.y >= -0.9)
-                        transform.position.add(0, -0.1f * playerSpeed, 0);
-            }
-        });
-        player1.getComponent(Transform.class).position.set(-0.9f, 0, 0);
 
-        Paddle player2 = new Paddle(0, 150, 0);
-        player2.addComponent(new UpdateComponent() {
-            @Override
-            public void input(long window) {
-                GameObject parent = getOwner();
-                Transform transform = parent.getComponent(Transform.class);
-                if (GLFW.glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-                    if (transform.position.y <= 0.9)
-                        transform.position.add(0, 0.1f * playerSpeed, 0);
-                if (GLFW.glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-                    if (transform.position.y >= -0.9)
-                        transform.position.add(0, -0.1f * playerSpeed, 0);
-            }
-        });
-        player2.getComponent(Transform.class).position.set(0.9f, 0, 0);
-
-        Ball ball = new Ball(0.02f, 24, 24, new Color(10, 120, 150));
-
-        float aspect = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;
-        scene.getCamera()
-                .getProjection().ortho(
-                        -aspect, aspect,
-                        -1, 1,
-                        -1, 1
-                );
-        scene.addGameObject(player1, player2, ball);
 
         try (MemoryStack stack = stackPush()) {
             IntBuffer w = stack.mallocInt(1);

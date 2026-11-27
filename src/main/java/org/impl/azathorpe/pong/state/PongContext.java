@@ -1,4 +1,4 @@
-package org.impl.azathorpe.pong;
+package org.impl.azathorpe.pong.state;
 
 import com.azathorpe.utils.struct.game.manage.Input;
 import com.azathorpe.utils.struct.game.manage.Scene;

@@ -16,8 +16,8 @@ public class Window {
     // The window handle
     private long window;
 
-    private int WINDOW_WIDTH = 800;
-    private int WINDOW_HEIGHT = 600;
+    public int WINDOW_WIDTH = 800;
+    public int WINDOW_HEIGHT = 600;
 
     public void run() {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");

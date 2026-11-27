@@ -95,6 +95,13 @@ public class Scene {
         physics.update(colliders);
     }
 
+    /**
+     * 放置物体调用这个方法
+     */
+    public void putGameObject(Window window) {
+
+    }
+
     public Camera getCamera() {
         return camera;
     }
