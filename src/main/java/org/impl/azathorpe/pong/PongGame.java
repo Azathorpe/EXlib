@@ -5,9 +5,12 @@ import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.manage.Scene;
 import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
 import com.azathorpe.utils.struct.game.manage.Window;
+import com.azathorpe.utils.struct.game.manage.game.Game;
+import com.azathorpe.utils.struct.game.manage.game.GameContext;
+import com.azathorpe.utils.struct.game.manage.game.GameStateMachine;
 import org.impl.azathorpe.pong.entities.Ball;
 import org.impl.azathorpe.pong.entities.Paddle;
-import org.lwjgl.*;
+import org.impl.azathorpe.pong.state.MenuState;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
@@ -16,7 +19,6 @@ import org.lwjgl.system.*;
 import java.awt.*;
 import java.nio.*;
 
-import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15C.glBufferData;
@@ -26,24 +28,29 @@ import static org.lwjgl.opengl.GL20C.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20C.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30C.glGenVertexArrays;
 import static org.lwjgl.system.MemoryStack.*;
-import static org.lwjgl.system.MemoryUtil.*;
 
-public class PongGame {
+public class PongGame implements Game {
     private int WINDOW_WIDTH = 800;
     private int WINDOW_HEIGHT = 600;
 
     private final Window window = new Window();
 
+    float playerSpeed = 0.5f;
+    private Scene scene;
+    private GameStateMachine stateMachine;
+
     public void run() {
-        window.run();
+        init();
         loop();
         window.quit();
     }
 
-    private void loop() {
+    @Override
+    public void init() {
+        window.run();
         GL.createCapabilities();
 
-        float playerSpeed = 0.5f;
+        scene = new Scene();
 
         Paddle player1 = new Paddle(150, 0, 0);
         player1.addComponent(new UpdateComponent() {
@@ -79,9 +86,7 @@ public class PongGame {
 
         Ball ball = new Ball(0.02f, 24, 24, new Color(10, 120, 150));
 
-        Scene scene = new Scene();
-
-        float aspect = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;   // 800/600 = 1.333
+        float aspect = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;
         scene.getCamera()
                 .getProjection().ortho(
                         -aspect, aspect,
@@ -101,16 +106,31 @@ public class PongGame {
             glViewport(0, 0, width, height);
         });
 
+
+        GameContext ctx = new PongContext(scene, window, this::setState);
+        stateMachine = new GameStateMachine(ctx, new MenuState());
+    }
+
+    @Override
+    public void loop() {
         while (!glfwWindowShouldClose(window.getWindow())) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-            scene.render();
-            scene.update(window.getWindow());
+            stateMachine.render();
+            stateMachine.update((float) glfwGetTime());
+
+//            scene.render();
+//            scene.update(window.getWindow());
 
             glfwSwapBuffers(window.getWindow()); // swap the color buffers
 
             glfwPollEvents();
         }
+    }
+
+    @Override
+    public void setState() {
+
     }
 
     public static void main(String[] args) {

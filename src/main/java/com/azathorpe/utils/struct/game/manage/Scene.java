@@ -25,8 +25,6 @@ public class Scene {
     private final PhysicsSystem physics = new PhysicsSystem();
     Camera camera = new Camera();
 
-    GameStateMachine gameStateMachine = new GameStateMachine();
-
     // Debug 模式
     boolean debugEnabled = true;
     DebugRenderer debugRenderer = new DebugRenderer();

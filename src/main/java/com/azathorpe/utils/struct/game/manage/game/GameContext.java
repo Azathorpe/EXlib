@@ -1,5 +1,6 @@
 package com.azathorpe.utils.struct.game.manage.game;
 
+import com.azathorpe.utils.struct.game.manage.Input;
 import com.azathorpe.utils.struct.game.manage.Scene;
 
 public interface GameContext {
