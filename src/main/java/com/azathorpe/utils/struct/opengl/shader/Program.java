@@ -27,7 +27,7 @@ public class Program {
 
             // 连接所有着色器
             linkProgram();
-        }finally{
+        } finally {
             // 移除所有着色器
             detachShader(shaders);
 
@@ -100,6 +100,10 @@ public class Program {
         for (Shader shader : shaders) {
             detachShader(shader);
         }
+    }
+
+    public void deleteProgram() {
+        glDeleteProgram(programId);
     }
 
     public int getProgramId() {

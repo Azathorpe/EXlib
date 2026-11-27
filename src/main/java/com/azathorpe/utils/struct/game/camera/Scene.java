@@ -20,6 +20,10 @@ public class Scene {
     private final PhysicsSystem physics = new PhysicsSystem();
     Camera camera = new Camera();
 
+    // Debug 模式
+    boolean debugEnabled = true;
+    DebugRenderer debugRenderer = new DebugRenderer();
+
     public void render() {
         for (GameObject gameObject : gameObjects) {
             Transform transform = gameObject.getComponent(Transform.class);
@@ -44,6 +48,21 @@ public class Scene {
             glBindVertexArray(mesh.getVao().getId());
             glDrawArrays(GL_TRIANGLES, 0, mesh.getVertexCount());
             glBindVertexArray(0);
+        }
+
+
+        // 2. 调试层：画所有 collider
+        if (debugEnabled) {
+            Matrix4f mvp = camera.getMVP(new Matrix4f());   // model = I
+            for (GameObject go : gameObjects) {
+                go.getComponentSafely(BoxCollider2D.class).ifPresent(c -> {
+                    float r = c.isTrigger ? 0 : 1;   // 触发器绿色，实体红色
+                    float g = c.isTrigger ? 1 : 0;
+                    debugRenderer.drawBox(c.getCenterX(), c.getCenterY(),
+                            c.halfWidth, c.halfHeight,
+                            mvp, r, g, 0, 1);
+                });
+            }
         }
     }
 
