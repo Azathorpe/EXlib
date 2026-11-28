@@ -67,6 +67,11 @@ public class PongGame implements Game {
             stateMachine.switchScene(gameScene);
         });
         stateMachine = new GameStateMachine(ctx, new MenuState());
+
+        stateMachine.getInput().register(GLFW_KEY_ESCAPE,
+                (ctx1, key, action, mods) -> {
+                    ctx1.getSceneManager().switchScene(menuScene);
+                });
     }
 
     @Override

@@ -1,17 +1,18 @@
 package com.azathorpe.utils.struct.game.manage;
 
 public class SceneManager {
-    private Scene currentScene;
+    private final Scene currentScene;
+    private int sceneTag = -1;
 
     public SceneManager(Scene currentScene) {
         this.currentScene = currentScene;
     }
 
     public void switchScene(Scene scene) {
+        if (sceneTag == scene.getSceneTag())
+            return;
         currentScene.exit();
-
-        this.currentScene = scene;
-        scene.putGameObject();
+        currentScene.addGameObject(scene.getGameObject());
     }
 
     public Scene getCurrentScene() {

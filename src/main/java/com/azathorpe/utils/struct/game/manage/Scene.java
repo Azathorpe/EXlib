@@ -16,6 +16,7 @@ import org.lwjgl.system.MemoryStack;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -25,6 +26,8 @@ import static org.lwjgl.opengl.GL20C.*;
 import static org.lwjgl.opengl.GL30C.glBindVertexArray;
 
 public class Scene {
+    private int sceneTag = -1;
+
     List<GameObject> gameObjects = new ArrayList<>();
     private final PhysicsSystem physics = new PhysicsSystem();
     Camera camera = new Camera();
@@ -158,5 +161,13 @@ public class Scene {
 
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+
+    public int getSceneTag() {
+        return sceneTag;
+    }
+
+    public void setSceneTag(int sceneTag) {
+        this.sceneTag = sceneTag;
     }
 }

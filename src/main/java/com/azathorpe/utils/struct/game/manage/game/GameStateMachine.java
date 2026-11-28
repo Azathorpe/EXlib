@@ -1,5 +1,6 @@
 package com.azathorpe.utils.struct.game.manage.game;
 
+import com.azathorpe.utils.struct.game.manage.Input;
 import com.azathorpe.utils.struct.game.manage.Scene;
 
 public class GameStateMachine {
@@ -28,5 +29,9 @@ public class GameStateMachine {
 
     public void switchScene(Scene scene) {
         ctx.getSceneManager().switchScene(scene);
+    }
+
+    public Input getInput() {
+        return ctx.getInput();
     }
 }
