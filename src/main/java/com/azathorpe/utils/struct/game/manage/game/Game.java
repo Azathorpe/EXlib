@@ -1,5 +1,6 @@
 package com.azathorpe.utils.struct.game.manage.game;
 
+import com.azathorpe.utils.struct.game.system.GameInstance;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
@@ -13,14 +14,17 @@ import static org.lwjgl.system.MemoryStack.stackPush;
  * 我们使用Game类来管理所有的输入 输出 渲染...
  */
 public abstract class Game implements IGame {
-    SceneManager sceneManager = new SceneManager(null);
-    Window window = new Window();
-    Input input = new Input();
+    // TODO: 可以设置一个初始Scene, 让用户知道必须要放一个Scene进去才可以
+    final SceneManager sceneManager = new SceneManager(null);
+    final Window window = new Window();
+    final Input input = new Input();
 
     @Override
     public final void initGame() {
         // 系统级初始化
         window.run();
+        // 保存静态Game
+        GameInstance.setInstance(this);
         GL.createCapabilities();
         // 设置视点
         try (MemoryStack stack = stackPush()) {

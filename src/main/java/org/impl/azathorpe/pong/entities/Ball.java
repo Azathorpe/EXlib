@@ -6,11 +6,14 @@ import com.azathorpe.utils.struct.game.gameobj.Mesh;
 import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
 import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
+import com.azathorpe.utils.struct.game.manage.game.Game;
+import com.azathorpe.utils.struct.game.system.GameInstance;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
 import com.azathorpe.utils.struct.opengl.shader.Program;
 import com.azathorpe.utils.struct.opengl.shader.VertexShader;
+import org.impl.azathorpe.pong.scene.GameScene;
 import org.joml.Vector3f;
 
 import java.awt.*;
@@ -134,7 +137,8 @@ public class Ball extends GameObject {
                 // 左右边界得分/重置（或反弹）
                 if (pos.x > 1.0f || pos.x < -1.0f) {
                     /* 重置球到中心 */
-
+                    Game instance = GameInstance.getInstance();
+                    instance.getSceneManager().switchScene(new GameScene(instance));
                 }
             }
         });
