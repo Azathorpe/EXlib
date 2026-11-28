@@ -1,33 +1,23 @@
 package org.impl.azathorpe.pong;
 
-import com.azathorpe.utils.struct.game.manage.game.Input;
-import com.azathorpe.utils.struct.game.manage.game.Scene;
 import com.azathorpe.utils.struct.game.manage.game.Game;
 import org.impl.azathorpe.pong.scene.GameScene;
 import org.impl.azathorpe.pong.scene.MenuScene;
 import org.lwjgl.glfw.GLFW;
 
-
-import static org.lwjgl.opengl.GL15C.glBufferData;
-import static org.lwjgl.opengl.GL15C.glGenBuffers;
-import static org.lwjgl.opengl.GL20C.glGetUniformLocation;
-import static org.lwjgl.opengl.GL20C.glUniformMatrix4fv;
-import static org.lwjgl.opengl.GL20C.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30C.glGenVertexArrays;
-
 public class PongIGame extends Game {
-    Scene gameScene;
-    Scene menuScene;
-
     @Override
     public void init() {
-        gameScene = new GameScene(this);
-        menuScene = new MenuScene(this);
+        getInput().register(GLFW.GLFW_KEY_ESCAPE, (game, key, action, mods) -> {
+                    if (action == GLFW.GLFW_PRESS)
+                        if (game.getCurrentScene().getClass().isAssignableFrom(MenuScene.class))
+                            game.getSceneManager().switchScene(new GameScene(this));
+                        else
+                            game.getSceneManager().switchScene(new MenuScene(this));
 
-        getInput().register(GLFW.GLFW_KEY_ESCAPE, (game, key, action, mods) ->
-                game.getSceneManager().switchScene(menuScene));
-
-        getSceneManager().setScene(gameScene);
+                }
+        );
+        getSceneManager().setScene(new GameScene(this));
     }
 
     public static void main(String[] args) {

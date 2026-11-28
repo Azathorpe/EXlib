@@ -16,6 +16,7 @@ import org.lwjgl.system.MemoryStack;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -25,6 +26,8 @@ import static org.lwjgl.opengl.GL20C.*;
 import static org.lwjgl.opengl.GL30C.glBindVertexArray;
 
 public class Scene {
+    private final String identifier;
+
     List<GameObject> gameObjects = new ArrayList<>();
     private final PhysicsSystem physics = new PhysicsSystem();
     Camera camera = new Camera();
@@ -34,10 +37,22 @@ public class Scene {
     DebugRenderer debugRenderer = new DebugRenderer();
 
     public Scene() {
+        this.identifier = UUID.randomUUID().toString();
+        putGameObject();
+    }
+
+    public Scene(String identifier) {
+        this.identifier = identifier;
         putGameObject();
     }
 
     public Scene(Game game) {
+        this.identifier = UUID.randomUUID().toString();
+        putGameObject(game);
+    }
+
+    public Scene(Game game, String identifier) {
+        this.identifier = identifier;
         putGameObject(game);
     }
 
@@ -132,5 +147,9 @@ public class Scene {
 
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 }
