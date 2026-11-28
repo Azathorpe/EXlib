@@ -50,6 +50,7 @@ public abstract class Game implements IGame {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             getCurrentScene().render();
+            getInput().update(this);
             getCurrentScene().update(getWindow());
 
             getSceneManager().nxtFrame();

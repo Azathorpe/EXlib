@@ -28,7 +28,6 @@ public class Scene {
     List<GameObject> gameObjects = new ArrayList<>();
     private final PhysicsSystem physics = new PhysicsSystem();
     Camera camera = new Camera();
-    MousePicker mousePicker = new MousePicker();
 
     // Debug 模式
     boolean debugEnabled = true;
@@ -38,8 +37,8 @@ public class Scene {
         putGameObject();
     }
 
-    public Scene(Window window) {
-        putGameObject(window);
+    public Scene(Game game) {
+        putGameObject(game);
     }
 
     public void render() {
@@ -67,7 +66,6 @@ public class Scene {
             glDrawArrays(GL_TRIANGLES, 0, mesh.getVertexCount());
             glBindVertexArray(0);
         }
-
 
         // 2. 调试层：画所有 collider
         if (debugEnabled) {
@@ -97,21 +95,6 @@ public class Scene {
         }
         // 2. 物理检测
         physics.update(colliders);
-
-        // 需要先知道当前鼠标世界坐标（用最新 cursor pos）
-        double[] mx = new double[1], my = new double[1];
-        glfwGetCursorPos(window.getHandle(), mx, my);
-        // 屏幕坐标 → 世界坐标（取决于你的投影）
-        float worldX = (float) mx[0];
-        float worldY = (float) my[0];
-        Vector3f vector3f = camera.screenToWorld(worldX, worldY,
-                window.WINDOW_WIDTH, window.WINDOW_HEIGHT,
-                camera.projection, camera.view);
-        worldX = vector3f.x;
-        worldY = vector3f.y;
-
-        // 更新 hover（保证 pressed 时 hovered 是最新的）
-        mousePicker.update(colliders, worldX, worldY);
     }
 
     public void addGameObject(GameObject... gameObject) {
@@ -135,7 +118,7 @@ public class Scene {
     /**
      * 放置物体调用这个方法
      */
-    public void putGameObject(Window window) {
+    public void putGameObject(Game game) {
 
     }
 

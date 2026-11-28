@@ -3,6 +3,7 @@ package org.impl.azathorpe.pong.scene;
 import com.azathorpe.utils.struct.game.gameobj.GameObject;
 import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
+import com.azathorpe.utils.struct.game.manage.game.Game;
 import com.azathorpe.utils.struct.game.manage.game.Scene;
 import com.azathorpe.utils.struct.game.manage.game.Window;
 import org.impl.azathorpe.pong.entities.Ball;
@@ -19,12 +20,12 @@ import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 public class GameScene extends Scene {
     float playerSpeed = 0.5f;
 
-    public GameScene(Window window) {
-        super(window);
+    public GameScene(Game game) {
+        super(game);
     }
 
     @Override
-    public void putGameObject(Window window) {
+    public void putGameObject(Game game) {
         Paddle player1 = new Paddle(150, 0, 0);
         player1.addComponent(new UpdateComponent() {
             @Override
@@ -59,7 +60,7 @@ public class GameScene extends Scene {
 
         Ball ball = new Ball(0.02f, 24, 24, new Color(10, 120, 150));
 
-        float aspect = (float) window.WINDOW_WIDTH / (float) window.WINDOW_HEIGHT;
+        float aspect = (float) game.getWindow().WINDOW_WIDTH / (float) game.getWindow().WINDOW_HEIGHT;
         this.getCamera()
                 .getProjection().ortho(
                         -aspect, aspect,

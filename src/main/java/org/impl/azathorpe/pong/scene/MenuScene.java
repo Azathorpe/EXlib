@@ -2,6 +2,7 @@ package org.impl.azathorpe.pong.scene;
 
 import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
+import com.azathorpe.utils.struct.game.manage.game.Game;
 import com.azathorpe.utils.struct.game.manage.game.Scene;
 import com.azathorpe.utils.struct.game.manage.game.Window;
 import org.impl.azathorpe.pong.entities.MenuBar;
@@ -10,18 +11,18 @@ import org.lwjgl.glfw.GLFW;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 
 public class MenuScene extends Scene {
-    public MenuScene(Window window) {
-        super(window);
+    public MenuScene(Game game) {
+        super(game);
     }
 
     @Override
-    public void putGameObject(Window window) {
+    public void putGameObject(Game game) {
         MenuBar newGame = new MenuBar((float) 100 / 255, (float) 200 / 255, (float) 100 / 255);
         addGameObject(newGame);
         newGame.getComponent(Transform.class).position.add(0, 0.3F, 0);
         newGame.addComponent(new BoxCollider2D() {
             @Override
-            public void onMouseDown(int button) {
+            public void onMouseDown(Game game, int button) {
                 if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
                     System.out.println("RUNNING");
                 }
@@ -37,10 +38,10 @@ public class MenuScene extends Scene {
         exitGame.getComponent(Transform.class).position.add(0, -0.3F, 0);
         exitGame.addComponent(new BoxCollider2D() {
             @Override
-            public void onMouseDown(int button) {
+            public void onMouseDown(Game game, int button) {
                 System.out.println("MOUSE DOWN");
                 if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-                    glfwSetWindowShouldClose(window.getHandle(), true);
+                    glfwSetWindowShouldClose(game.getWindowHandle(), true);
                     System.out.println("EXIT");
                 }
             }

@@ -266,31 +266,31 @@ public class Main {
             }
         });
 
-        Scene scene = new Scene(new Window());
-        scene.addGameObject(gameObject);
-
-        scene.setCamera(new Camera());
-        scene.getCamera()
-                .setProjection(new Matrix4f()
-                        .perspective(
-                                (float) Math.toRadians(45.0f),
-                                (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT,
-                                0.1f,
-                                100.0f
-                        ));
-        scene.getCamera()
-                .setView(new Matrix4f()
-                        .lookAt(
-                                new Vector3f(4, 3, 3),
-                                new Vector3f(0, 0, 0),
-                                new Vector3f(0, 1, 0)
-                        ));
-
+//        Scene scene = new Scene(new Window());
+//        scene.addGameObject(gameObject);
+//
+//        scene.setCamera(new Camera());
+//        scene.getCamera()
+//                .setProjection(new Matrix4f()
+//                        .perspective(
+//                                (float) Math.toRadians(45.0f),
+//                                (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT,
+//                                0.1f,
+//                                100.0f
+//                        ));
+//        scene.getCamera()
+//                .setView(new Matrix4f()
+//                        .lookAt(
+//                                new Vector3f(4, 3, 3),
+//                                new Vector3f(0, 0, 0),
+//                                new Vector3f(0, 1, 0)
+//                        ));
+//
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-            scene.render();
-            //FIXME
+//            scene.render();
+//            FIXME
 //            scene.update(window);
 
             glfwSwapBuffers(window); // swap the color buffers

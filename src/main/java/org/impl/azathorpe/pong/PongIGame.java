@@ -21,8 +21,8 @@ public class PongIGame extends Game {
 
     @Override
     public void init() {
-        gameScene = new GameScene(getWindow());
-        menuScene = new MenuScene(getWindow());
+        gameScene = new GameScene(this);
+        menuScene = new MenuScene(this);
 
         getInput().register(GLFW.GLFW_KEY_ESCAPE, (game, key, action, mods) ->
                 game.getSceneManager().switchScene(menuScene));
