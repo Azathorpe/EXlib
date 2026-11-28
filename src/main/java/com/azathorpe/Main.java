@@ -4,7 +4,7 @@ import com.azathorpe.utils.struct.game.gameobj.GameObject;
 import com.azathorpe.utils.struct.game.gameobj.Material;
 import com.azathorpe.utils.struct.game.gameobj.Mesh;
 import com.azathorpe.utils.struct.game.gameobj.Transform;
-import com.azathorpe.utils.struct.game.manage.Camera;
+import com.azathorpe.utils.struct.game.manage.game.Camera;
 import com.azathorpe.utils.struct.game.manage.game.Scene;
 import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
 import com.azathorpe.utils.struct.game.manage.game.Window;
