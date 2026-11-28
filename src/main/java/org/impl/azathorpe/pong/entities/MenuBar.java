@@ -1,9 +1,9 @@
 package org.impl.azathorpe.pong.entities;
 
 import com.azathorpe.utils.struct.game.gameobj.GameObject;
-import com.azathorpe.utils.struct.game.gameobj.Material;
-import com.azathorpe.utils.struct.game.gameobj.Mesh;
-import com.azathorpe.utils.struct.game.gameobj.Transform;
+import com.azathorpe.utils.struct.game.gameobj.components.base.Material;
+import com.azathorpe.utils.struct.game.gameobj.components.base.Mesh;
+import com.azathorpe.utils.struct.game.gameobj.components.base.Transform;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;

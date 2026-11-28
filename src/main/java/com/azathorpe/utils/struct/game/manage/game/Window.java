@@ -12,7 +12,10 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class Window {
+/**
+ * Window 强制被Game类管理
+ */
+public final class Window {
     // The window handle
     private long window;
 

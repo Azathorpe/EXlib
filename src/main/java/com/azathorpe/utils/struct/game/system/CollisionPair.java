@@ -2,6 +2,9 @@ package com.azathorpe.utils.struct.game.system;
 
 import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
 
+/**
+ * 碰撞对
+ */
 public class CollisionPair {
     final BoxCollider2D a, b;
     CollisionPair(BoxCollider2D x, BoxCollider2D y) {

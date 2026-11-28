@@ -3,28 +3,27 @@ package com.azathorpe.utils.struct.game.manage.game;
 import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
 import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
 import com.azathorpe.utils.struct.game.gameobj.GameObject;
-import com.azathorpe.utils.struct.game.gameobj.Material;
-import com.azathorpe.utils.struct.game.gameobj.Mesh;
-import com.azathorpe.utils.struct.game.gameobj.Transform;
-import com.azathorpe.utils.struct.game.manage.MousePicker;
+import com.azathorpe.utils.struct.game.gameobj.components.base.Material;
+import com.azathorpe.utils.struct.game.gameobj.components.base.Mesh;
+import com.azathorpe.utils.struct.game.gameobj.components.base.Transform;
 import com.azathorpe.utils.struct.game.manage.debugger.DebugRenderer;
 import com.azathorpe.utils.struct.game.system.PhysicsSystem;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Supplier;
 
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL20C.*;
 import static org.lwjgl.opengl.GL30C.glBindVertexArray;
 
+/**
+ * 场景
+ */
 public class Scene {
     private final String identifier;
 

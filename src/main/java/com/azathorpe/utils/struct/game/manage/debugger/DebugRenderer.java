@@ -13,6 +13,10 @@ import static org.lwjgl.opengl.GL15C.*;
 import static org.lwjgl.opengl.GL20C.*;
 import static org.lwjgl.opengl.GL30C.*;
 
+/**
+ * Debug 渲染 现在主要是渲染碰撞箱
+ * TODO: 把这里改成用VAO/VBO的形式
+ */
 public class DebugRenderer {
     private final Program program;
     private final int vao;

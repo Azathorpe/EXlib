@@ -1,5 +1,6 @@
-package com.azathorpe.utils.struct.game.gameobj;
+package com.azathorpe.utils.struct.game.gameobj.components.base;
 
+import com.azathorpe.utils.struct.game.gameobj.Component;
 import com.azathorpe.utils.struct.opengl.VAO;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
@@ -12,7 +13,7 @@ import java.util.List;
 import static org.lwjgl.opengl.GL20C.glEnableVertexAttribArray;
 
 /**
- * 定义物体的位置
+ * 定义物体的实体
  */
 public class Mesh extends Component {
     private final VAO vao;

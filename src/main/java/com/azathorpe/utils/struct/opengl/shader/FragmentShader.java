@@ -4,6 +4,9 @@ import java.nio.file.Path;
 
 import static org.lwjgl.opengl.GL20C.*;
 
+/**
+ * 片段着色器
+ */
 public class FragmentShader extends Shader {
     public FragmentShader(String shaderCode) {
         super(GL_FRAGMENT_SHADER, shaderCode);

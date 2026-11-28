@@ -1,7 +1,7 @@
 package com.azathorpe.utils.struct.game.gameobj.components;
 
 import com.azathorpe.utils.struct.game.gameobj.Component;
-import com.azathorpe.utils.struct.game.gameobj.Transform;
+import com.azathorpe.utils.struct.game.gameobj.components.base.Transform;
 
 /**
  * 2D 碰撞箱

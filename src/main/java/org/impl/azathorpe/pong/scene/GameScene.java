@@ -1,11 +1,10 @@
 package org.impl.azathorpe.pong.scene;
 
 import com.azathorpe.utils.struct.game.gameobj.GameObject;
-import com.azathorpe.utils.struct.game.gameobj.Transform;
+import com.azathorpe.utils.struct.game.gameobj.components.base.Transform;
 import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
 import com.azathorpe.utils.struct.game.manage.game.Game;
 import com.azathorpe.utils.struct.game.manage.game.Scene;
-import com.azathorpe.utils.struct.game.manage.game.Window;
 import org.impl.azathorpe.pong.entities.Ball;
 import org.impl.azathorpe.pong.entities.Paddle;
 import org.lwjgl.glfw.GLFW;

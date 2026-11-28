@@ -13,6 +13,10 @@ import java.util.function.Supplier;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+/**
+ * Input
+ * 采集鼠标动作, 通过Input注册按键回调
+ */
 public class Input {
     private final Map<Integer, List<KeyHandler>> keyHandlers = new HashMap<>();
     private Supplier<Game> getGame;

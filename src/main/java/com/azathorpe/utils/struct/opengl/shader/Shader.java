@@ -6,6 +6,9 @@ import java.nio.file.Path;
 
 import static org.lwjgl.opengl.GL20C.*;
 
+/**
+ * 着色器
+ */
 public abstract class Shader {
     private final int shaderId;
     private String shaderSource;

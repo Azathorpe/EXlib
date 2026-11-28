@@ -6,6 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 物理系统
+ * (硬检测碰撞 以后绝对会改的)
+ */
 public class PhysicsSystem {
     /**
      * 上一帧处于碰撞的 pair 集合

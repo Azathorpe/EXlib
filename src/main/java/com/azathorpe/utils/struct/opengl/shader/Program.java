@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL20C.*;
 
+/**
+ * Program
+ */
 public class Program {
     private ArrayList<Shader> shaderRecord = new ArrayList<>();
     private final int programId;

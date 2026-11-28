@@ -5,6 +5,9 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+/**
+ * 相机组件
+ */
 public class Camera extends Component {
     Matrix4f view = new Matrix4f();
     Matrix4f projection = new Matrix4f();

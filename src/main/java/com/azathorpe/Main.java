@@ -1,25 +1,20 @@
 package com.azathorpe;
 
 import com.azathorpe.utils.struct.game.gameobj.GameObject;
-import com.azathorpe.utils.struct.game.gameobj.Material;
-import com.azathorpe.utils.struct.game.gameobj.Mesh;
-import com.azathorpe.utils.struct.game.gameobj.Transform;
-import com.azathorpe.utils.struct.game.manage.game.Camera;
-import com.azathorpe.utils.struct.game.manage.game.Scene;
+import com.azathorpe.utils.struct.game.gameobj.components.base.Material;
+import com.azathorpe.utils.struct.game.gameobj.components.base.Mesh;
+import com.azathorpe.utils.struct.game.gameobj.components.base.Transform;
 import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
-import com.azathorpe.utils.struct.game.manage.game.Window;
 import com.azathorpe.utils.struct.opengl.VAO;
 import com.azathorpe.utils.struct.opengl.VBO;
 import com.azathorpe.utils.struct.opengl.VertexAttribPointer;
 import com.azathorpe.utils.struct.opengl.shader.FragmentShader;
 import com.azathorpe.utils.struct.opengl.shader.Program;
 import com.azathorpe.utils.struct.opengl.shader.VertexShader;
-import org.joml.Vector3f;
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
-import org.joml.Matrix4f;
 
 
 import java.nio.*;

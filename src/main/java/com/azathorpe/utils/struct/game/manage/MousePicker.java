@@ -6,6 +6,9 @@ import com.azathorpe.utils.struct.game.manage.game.Game;
 
 import java.util.List;
 
+/**
+ * 鼠标采集器
+ */
 public class MousePicker {
     private MouseInteractive hovered = null;   // 上一帧鼠标所在的 Box
 

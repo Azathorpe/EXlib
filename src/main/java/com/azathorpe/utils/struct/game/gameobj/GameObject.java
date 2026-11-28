@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 游戏Object (灵感来自团结 :p )
+ */
 public class GameObject {
     List<Component> components = new ArrayList<>();
 
