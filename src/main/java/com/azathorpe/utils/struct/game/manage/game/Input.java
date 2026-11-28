@@ -1,6 +1,4 @@
-package com.azathorpe.utils.struct.game.manage;
-
-import com.azathorpe.utils.struct.game.manage.game.Game;
+package com.azathorpe.utils.struct.game.manage.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;

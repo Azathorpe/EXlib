@@ -1,14 +1,9 @@
 package com.azathorpe.utils.struct.game.manage.game;
 
-import com.azathorpe.utils.struct.game.manage.Input;
-import com.azathorpe.utils.struct.game.manage.Scene;
-import com.azathorpe.utils.struct.game.manage.SceneManager;
-import com.azathorpe.utils.struct.game.manage.Window;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.IntBuffer;
-import java.util.function.Supplier;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;

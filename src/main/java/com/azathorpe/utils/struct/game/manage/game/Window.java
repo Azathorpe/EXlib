@@ -1,4 +1,4 @@
-package com.azathorpe.utils.struct.game.manage;
+package com.azathorpe.utils.struct.game.manage.game;
 
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;

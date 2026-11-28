@@ -1,4 +1,4 @@
-package com.azathorpe.utils.struct.game.manage;
+package com.azathorpe.utils.struct.game.manage.game;
 
 import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
 import com.azathorpe.utils.struct.game.gameobj.components.UpdateComponent;
@@ -6,6 +6,8 @@ import com.azathorpe.utils.struct.game.gameobj.GameObject;
 import com.azathorpe.utils.struct.game.gameobj.Material;
 import com.azathorpe.utils.struct.game.gameobj.Mesh;
 import com.azathorpe.utils.struct.game.gameobj.Transform;
+import com.azathorpe.utils.struct.game.manage.Camera;
+import com.azathorpe.utils.struct.game.manage.MousePicker;
 import com.azathorpe.utils.struct.game.manage.debugger.DebugRenderer;
 import com.azathorpe.utils.struct.game.system.PhysicsSystem;
 import org.joml.Matrix4f;

@@ -2,8 +2,8 @@ package org.impl.azathorpe.pong.scene;
 
 import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.gameobj.components.BoxCollider2D;
-import com.azathorpe.utils.struct.game.manage.Scene;
-import com.azathorpe.utils.struct.game.manage.Window;
+import com.azathorpe.utils.struct.game.manage.game.Scene;
+import com.azathorpe.utils.struct.game.manage.game.Window;
 import org.impl.azathorpe.pong.entities.MenuBar;
 import org.lwjgl.glfw.GLFW;
 
