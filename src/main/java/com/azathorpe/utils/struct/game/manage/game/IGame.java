@@ -5,7 +5,13 @@ import com.azathorpe.utils.struct.game.manage.Scene;
 import com.azathorpe.utils.struct.game.manage.SceneManager;
 import com.azathorpe.utils.struct.game.manage.Window;
 
-public interface GameContext {
+public interface IGame {
+    void initGame();
+
+    void loop();
+
+    void quit();
+
     SceneManager getSceneManager();
 
     Scene getCurrentScene();
@@ -14,7 +20,5 @@ public interface GameContext {
 
     Window getWindow();
 
-    void transitionTo(GameState next);   // 请求切换
-
-    long getHandle();
+    long getWindowHandle();
 }

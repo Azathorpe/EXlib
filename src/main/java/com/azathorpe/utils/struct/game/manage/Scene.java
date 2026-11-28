@@ -7,16 +7,13 @@ import com.azathorpe.utils.struct.game.gameobj.Material;
 import com.azathorpe.utils.struct.game.gameobj.Mesh;
 import com.azathorpe.utils.struct.game.gameobj.Transform;
 import com.azathorpe.utils.struct.game.manage.debugger.DebugRenderer;
-import com.azathorpe.utils.struct.game.manage.game.GameContext;
 import com.azathorpe.utils.struct.game.system.PhysicsSystem;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -26,8 +23,6 @@ import static org.lwjgl.opengl.GL20C.*;
 import static org.lwjgl.opengl.GL30C.glBindVertexArray;
 
 public class Scene {
-    private int sceneTag = -1;
-
     List<GameObject> gameObjects = new ArrayList<>();
     private final PhysicsSystem physics = new PhysicsSystem();
     Camera camera = new Camera();
@@ -100,16 +95,16 @@ public class Scene {
         return gameObjects.toArray(new GameObject[0]);
     }
 
-    public void init(GameContext context,Window window) {
+    public void init(Window window) {
         // 注册鼠标按键回调
         // TODO: 移动到Input里面去
         glfwSetMouseButtonCallback(window.getHandle(), (win, button, action, mods) -> {
             boolean pressed = (action == GLFW_PRESS);
-            mousePicker.onMouseButton(context, button, pressed);
+            mousePicker.onMouseButton( button, pressed);
         });
     }
 
-    public void update(GameContext context,Window window) {
+    public void update(Window window) {
         // 向所有GameObject广播操作
         for (GameObject gameObject : gameObjects)
             gameObject.getComponentSafely(UpdateComponent.class)
@@ -136,7 +131,7 @@ public class Scene {
         worldY = vector3f.y;
 
         // 更新 hover（保证 pressed 时 hovered 是最新的）
-        mousePicker.update(context, colliders, worldX, worldY);
+        mousePicker.update(colliders, worldX, worldY);
     }
 
     public void exit() {
@@ -161,13 +156,5 @@ public class Scene {
 
     public void setCamera(Camera camera) {
         this.camera = camera;
-    }
-
-    public int getSceneTag() {
-        return sceneTag;
-    }
-
-    public void setSceneTag(int sceneTag) {
-        this.sceneTag = sceneTag;
     }
 }

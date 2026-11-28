@@ -1,30 +1,25 @@
 package com.azathorpe.utils.struct.game.manage;
 
-import com.azathorpe.utils.struct.game.manage.game.GameContext;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWKeyCallbackI;
+import com.azathorpe.utils.struct.game.manage.game.Game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Input {
     private final Map<Integer, List<KeyHandler>> keyHandlers = new HashMap<>();
-    private Supplier<GameContext> contextSupplier;   // 动态获取当前 context
+    private Supplier<Game> getGame;
 
-    public void init(Window window, Supplier<GameContext> contextSupplier) {
-        this.contextSupplier = contextSupplier;
+    public void init(Window window, Supplier<Game> game) {
+        getGame = game;
         glfwSetKeyCallback(window.getHandle(), (win, key, scancode, action, mods) -> {
-            GameContext ctx = contextSupplier.get();   // 每次拿最新 context
             List<KeyHandler> handlers = keyHandlers.get(key);
             if (handlers != null)
-                for (KeyHandler h : handlers) h.handle(ctx, key, action, mods);
+                for (KeyHandler h : handlers) h.handle(getGame.get(), key, action, mods);
         });
     }
 
@@ -52,6 +47,6 @@ public class Input {
 
     @FunctionalInterface
     public interface KeyHandler {
-        void handle(GameContext ctx, int key, int action, int mods);
+        void handle(Game game, int key, int action, int mods);
     }
 }
