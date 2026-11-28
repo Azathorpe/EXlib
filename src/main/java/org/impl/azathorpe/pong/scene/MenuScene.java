@@ -37,7 +37,8 @@ public class MenuScene extends Scene {
         exitGame.getComponent(Transform.class).position.add(0, -0.3F, 0);
         exitGame.addComponent(new BoxCollider2D() {
             @Override
-            public void onMouseDown( int button) {
+            public void onMouseDown(int button) {
+                System.out.println("MOUSE DOWN");
                 if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
                     glfwSetWindowShouldClose(window.getHandle(), true);
                     System.out.println("EXIT");
