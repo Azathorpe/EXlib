@@ -5,7 +5,7 @@ import org.impl.azathorpe.pong.scene.GameScene;
 import org.impl.azathorpe.pong.scene.MenuScene;
 import org.lwjgl.glfw.GLFW;
 
-public class PongIGame extends Game {
+public class PongGame extends Game {
     @Override
     public void init() {
         getInput().register(GLFW.GLFW_KEY_ESCAPE, (game, key, action, mods) -> {
@@ -21,7 +21,7 @@ public class PongIGame extends Game {
     }
 
     public static void main(String[] args) {
-        new PongIGame().initGame();
+        new PongGame().initGame();
     }
 
 }
