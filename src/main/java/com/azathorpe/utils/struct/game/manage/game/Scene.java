@@ -36,11 +36,13 @@ public class Scene {
     boolean debugEnabled = true;
     DebugRenderer debugRenderer = new DebugRenderer();
 
+    @Deprecated
     public Scene() {
         this.identifier = UUID.randomUUID().toString();
         putGameObject();
     }
 
+    @Deprecated
     public Scene(String identifier) {
         this.identifier = identifier;
         putGameObject();
@@ -137,6 +139,7 @@ public class Scene {
 
     }
 
+    @Deprecated
     public void putGameObject() {
 
     }
