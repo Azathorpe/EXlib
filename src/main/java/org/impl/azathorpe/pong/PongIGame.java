@@ -1,9 +1,11 @@
 package org.impl.azathorpe.pong;
 
+import com.azathorpe.utils.struct.game.manage.game.Input;
 import com.azathorpe.utils.struct.game.manage.game.Scene;
 import com.azathorpe.utils.struct.game.manage.game.Game;
 import org.impl.azathorpe.pong.scene.GameScene;
 import org.impl.azathorpe.pong.scene.MenuScene;
+import org.lwjgl.glfw.GLFW;
 
 
 import static org.lwjgl.opengl.GL15C.glBufferData;
@@ -21,6 +23,9 @@ public class PongIGame extends Game {
     public void init() {
         gameScene = new GameScene(getWindow());
         menuScene = new MenuScene(getWindow());
+
+        getInput().register(GLFW.GLFW_KEY_ESCAPE, (game, key, action, mods) ->
+                game.getSceneManager().switchScene(menuScene));
 
         getSceneManager().setScene(gameScene);
     }

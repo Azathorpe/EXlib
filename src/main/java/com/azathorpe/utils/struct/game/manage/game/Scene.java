@@ -16,6 +16,7 @@ import org.lwjgl.system.MemoryStack;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -83,28 +84,6 @@ public class Scene {
         }
     }
 
-    public void addGameObject(GameObject... gameObject) {
-        gameObjects.addAll(List.of(gameObject));
-    }
-
-    public void removeGameObject(GameObject... gameObject) {
-        for (GameObject go : gameObject)
-            gameObjects.remove(go);
-    }
-
-    public GameObject[] getGameObject() {
-        return gameObjects.toArray(new GameObject[0]);
-    }
-
-    public void init(Window window) {
-        // 注册鼠标按键回调
-        // TODO: 移动到Input里面去
-        glfwSetMouseButtonCallback(window.getHandle(), (win, button, action, mods) -> {
-            boolean pressed = (action == GLFW_PRESS);
-            mousePicker.onMouseButton( button, pressed);
-        });
-    }
-
     public void update(Window window) {
         // 向所有GameObject广播操作
         for (GameObject gameObject : gameObjects)
@@ -133,6 +112,19 @@ public class Scene {
 
         // 更新 hover（保证 pressed 时 hovered 是最新的）
         mousePicker.update(colliders, worldX, worldY);
+    }
+
+    public void addGameObject(GameObject... gameObject) {
+        gameObjects.addAll(List.of(gameObject));
+    }
+
+    public void removeGameObject(GameObject... gameObject) {
+        for (GameObject go : gameObject)
+            gameObjects.remove(go);
+    }
+
+    public GameObject[] getGameObject() {
+        return gameObjects.toArray(new GameObject[0]);
     }
 
     public void exit() {

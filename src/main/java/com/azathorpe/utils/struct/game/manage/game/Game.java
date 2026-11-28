@@ -52,6 +52,8 @@ public abstract class Game implements IGame {
             getCurrentScene().render();
             getCurrentScene().update(getWindow());
 
+            getSceneManager().nxtFrame();
+
             glfwSwapBuffers(getWindow().getHandle()); // swap the color buffers
 
             glfwPollEvents();
